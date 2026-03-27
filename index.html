@@ -1562,7 +1562,7 @@ function showResults() {
                         <span class="stat-value">${fund.performance.yr10 !== 'N/A' ? fund.performance.yr10 : (fund.performance.sinceInception || 'N/A')}</span>
                     </div>` : ''}
                 </div>
-                ${(() => { const h = getHistoricalContext(fund.stockBond); return '<div class="hist-context"><strong>Historical Long-Term Avg: ' + h.avg + '</strong>' + h.note + '</div>'; })()}
+                ${(() => { const h = getHistoricalContext(fund.stockBond); return '<div class="hist-context"><strong>Expected Return Range: ' + h.avg + '</strong>' + h.note + '</div>'; })()}
                 ${rec.key === 'targetDateDynamic' ? '<p style="font-size:0.75rem;color:#999;margin-top:10px;line-height:1.4;"><em>This fund recommendation is based on the retirement age you selected. If your retirement plans change, a different target date fund may be more appropriate.</em></p>' : ''}
             </div>
         `;
