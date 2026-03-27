@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City of Murrieta - Deferred Compensation Plan</title>
+    <title></title>
+    <script src="client-config.js"></script>
     <style>
         :root {
             --primary: #1a3a5c;
@@ -814,12 +815,12 @@
     <div class="header-content">
         <div class="header-left">
             <div class="header-title">
-                <h1>City of Murrieta</h1>
-                <p>457 Deferred Compensation Plan</p>
+                <h1 id="plan-name"></h1>
+                <p id="plan-subtitle"></p>
             </div>
         </div>
         <div class="header-login">
-            <a href="https://www.nrsforu.com/iApp/rsc/login.x" target="_blank" rel="noopener">Log In to Nationwide</a>
+            <a id="header-login" href="#" target="_blank" rel="noopener"></a>
         </div>
     </div>
 </header>
@@ -1096,9 +1097,9 @@
         </div>
 
         <div class="cta-section">
-            <h3>Ready to Invest?</h3>
-            <p>Log in to your Nationwide retirement account to select your investment allocation and start putting your plan into action.</p>
-            <a href="https://www.nrsforu.com/iApp/rsc/login.x" target="_blank" rel="noopener" class="btn-cta">Log In to Nationwide</a>
+            <h3 id="cta-title"></h3>
+            <p id="cta-body"></p>
+            <a id="cta-btn" href="#" target="_blank" rel="noopener" class="btn-cta"></a>
             <br>
             <span class="restart-link" onclick="restart()">Retake the questionnaire</span>
         </div>
@@ -1114,22 +1115,54 @@
 </div>
 
 <footer>
-    <p>City of Murrieta 457 Deferred Compensation Plan</p>
-    <p>This tool is for educational purposes only and does not constitute investment advice.<br>
-    Consult a financial advisor before making investment decisions. Past performance does not guarantee future results.<br>
-    Fund performance data sourced from Yahoo Finance / Morningstar. Trailing returns as of 2/28/2026. Updated Q1 2026.</p>
+    <p id="footer-name"></p>
+    <p id="footer-disclaimer"></p>
 </footer>
 
 <script>
+// Initialize page from client-config.js
+function initPage() {
+    const c = clientConfig;
+
+    // Colors
+    const r = document.documentElement;
+    r.style.setProperty('--primary',       c.colors.primary);
+    r.style.setProperty('--primary-light', c.colors.primaryLight);
+    r.style.setProperty('--accent',        c.colors.accent);
+    r.style.setProperty('--accent-light',  c.colors.accentLight);
+
+    // Page title & header
+    document.title = c.pageTitle;
+    document.getElementById('plan-name').textContent    = c.planName;
+    document.getElementById('plan-subtitle').textContent = c.planSubtitle;
+
+    // Login links
+    ['header-login', 'cta-btn'].forEach(id => {
+        const el = document.getElementById(id);
+        el.href        = c.loginUrl;
+        el.textContent = c.loginText;
+    });
+
+    // CTA
+    document.getElementById('cta-title').textContent = c.ctaTitle;
+    document.getElementById('cta-body').textContent  = c.ctaBody;
+
+    // Footer
+    document.getElementById('footer-name').textContent       = c.footerName;
+    document.getElementById('footer-disclaimer').innerHTML   = c.footerDisclaimer;
+}
+
+document.addEventListener('DOMContentLoaded', initPage);
+
 // State
 let currentQuestion = 1;
 const totalQuestions = 7;
 const answers = {};
 let selectedCompare = new Set();
 
-// Fund Data - from City of Murrieta Q4 2025 Monitoring Report & Model Portfolio Report
-// Investment Data as of 12/31/2025
-const fundData = {
+// Fund data loaded from client-config.js
+const fundData = clientConfig.fundData;
+const _removedInlineData = {
     modelAggressive: {
         id: 'modelAggressive',
         type: 'Model Portfolio',
@@ -1445,39 +1478,14 @@ function showResults() {
     // Combined score
     const totalScore = timeScore + riskScore;
 
-    let riskProfile, modelFund, targetDateFund, allocationFund, profileDesc;
+    // Risk profile driven by client-config.js
+    const profileMatch = clientConfig.riskProfiles.find(p => totalScore <= p.maxScore)
+        || clientConfig.riskProfiles[clientConfig.riskProfiles.length - 1];
 
-    if (totalScore <= 10) {
-        riskProfile = 'Conservative';
-        modelFund = 'modelConservative';
-        allocationFund = 'wellesley';
-        profileDesc = `Based on your responses, you have a conservative investment profile. With ${yearsToRetire} years until retirement, your recommendations emphasize capital preservation and income with modest growth exposure.`;
-    } else if (totalScore <= 14) {
-        riskProfile = 'Moderately Conservative';
-        modelFund = 'modelConservative';
-        allocationFund = 'lifestrategyConservative';
-        profileDesc = `Based on your responses, you have a moderately conservative profile. With ${yearsToRetire} years until retirement, your recommendations balance stability with enough growth to help stay ahead of inflation.`;
-    } else if (totalScore <= 18) {
-        riskProfile = 'Moderate';
-        modelFund = 'modelBalanced';
-        allocationFund = 'puritan';
-        profileDesc = `Based on your responses, you have a moderate investment profile. With ${yearsToRetire} years until retirement, your recommendations seek a balance between growth potential and downside protection.`;
-    } else if (totalScore <= 22) {
-        riskProfile = 'Moderate Growth';
-        modelFund = 'modelModerateGrowth';
-        allocationFund = 'lifestrategyGrowth';
-        profileDesc = `Based on your responses, you have a moderate growth profile. With ${yearsToRetire} years until retirement, your recommendations favor growth with a meaningful bond allocation for stability.`;
-    } else if (totalScore <= 26) {
-        riskProfile = 'Moderately Aggressive';
-        modelFund = 'modelAggressive';
-        allocationFund = 'lifestrategyGrowth';
-        profileDesc = `Based on your responses, you have a moderately aggressive profile. With ${yearsToRetire} years until retirement, your recommendations emphasize strong long-term growth.`;
-    } else {
-        riskProfile = 'Aggressive';
-        modelFund = 'modelAggressive';
-        allocationFund = 'lifestrategyGrowth';
-        profileDesc = `Based on your responses, you have an aggressive investment profile. With ${yearsToRetire} years until retirement, your recommendations emphasize maximum long-term growth.`;
-    }
+    const riskProfile    = profileMatch.profile;
+    const modelFund      = clientConfig.hasModelPortfolios ? profileMatch.modelFund : null;
+    const allocationFund = profileMatch.allocationFund;
+    const profileDesc    = `Based on your responses, you have a ${riskProfile.toLowerCase()} investment profile. With ${yearsToRetire} years until retirement, your recommendations reflect your goals and risk tolerance.`;
 
     // Configure target date fund based on retirement year
     const retireYear = new Date().getFullYear() + yearsToRetire;
@@ -1524,10 +1532,10 @@ function showResults() {
     document.getElementById('risk-badge').textContent = riskProfile;
     document.getElementById('results-description').textContent = profileDesc;
 
-    // Build recommendation cards
+    // Build recommendation cards (model fund omitted if client has none)
     const recommendations = [
-        { key: modelFund, isBestMatch: true },
-        { key: 'targetDateDynamic', isBestMatch: false },
+        ...(modelFund ? [{ key: modelFund, isBestMatch: true }] : []),
+        { key: 'targetDateDynamic', isBestMatch: !modelFund },
         { key: allocationFund, isBestMatch: false }
     ];
 
