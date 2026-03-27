@@ -13,6 +13,10 @@ const clientConfig = {
     planName:     'City of Murrieta',
     planSubtitle: '457 Deferred Compensation Plan',
 
+    // Logos (leave as empty string '' to hide)
+    clientLogoUrl:    'murrieta-logo.png',
+    fiduciaryLogoUrl: 'fiduciary-experts-logo.png',
+
     // Theme colors
     colors: {
         primary:      '#1a3a5c',

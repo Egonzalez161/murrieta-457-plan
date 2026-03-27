@@ -47,15 +47,22 @@
             max-width: 1100px;
             margin: 0 auto;
             padding: 18px 30px;
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            justify-content: space-between;
+            gap: 16px;
         }
 
         .header-left {
             display: flex;
             align-items: center;
             gap: 16px;
+        }
+
+        .header-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .city-seal {
@@ -73,6 +80,7 @@
         .header-right {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             gap: 20px;
         }
 
@@ -765,8 +773,8 @@
         /* Responsive */
         @media (max-width: 640px) {
             .header-content {
-                flex-direction: column;
-                gap: 12px;
+                grid-template-columns: 1fr;
+                gap: 10px;
                 text-align: center;
             }
 
@@ -774,8 +782,13 @@
                 flex-direction: column;
             }
 
+            .header-center {
+                justify-content: center;
+            }
+
             .header-right {
                 flex-direction: column;
+                align-items: center;
                 gap: 10px;
             }
 
@@ -819,7 +832,11 @@
                 <p id="plan-subtitle"></p>
             </div>
         </div>
-        <div class="header-login">
+        <div class="header-center">
+            <img id="client-logo" class="city-seal" src="" alt="" style="display:none;">
+        </div>
+        <div class="header-right">
+            <img id="fe-logo" class="fe-logo" src="" alt="Fiduciary Experts" style="display:none;">
             <a id="header-login" href="#" target="_blank" rel="noopener"></a>
         </div>
     </div>
@@ -1142,6 +1159,19 @@ function initPage() {
         el.href        = c.loginUrl;
         el.textContent = c.loginText;
     });
+
+    // Logos
+    if (c.clientLogoUrl) {
+        const cl = document.getElementById('client-logo');
+        cl.src = c.clientLogoUrl;
+        cl.alt = c.planName;
+        cl.style.display = '';
+    }
+    if (c.fiduciaryLogoUrl) {
+        const fl = document.getElementById('fe-logo');
+        fl.src = c.fiduciaryLogoUrl;
+        fl.style.display = '';
+    }
 
     // CTA
     document.getElementById('cta-title').textContent = c.ctaTitle;
