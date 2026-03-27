@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City of Murrieta - Deferred Compensation Plan</title>
+    <style>
+        :root {
+            --primary: #1a3a5c;
+            --primary-light: #2a5a8c;
+            --accent: #c8a951;
+            --accent-light: #e8d080;
+            --bg: #f5f6fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #5a6a7a;
+            --border: #dde2e8;
+            --success: #27ae60;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .header-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 18px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .city-seal {
+            height: 56px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .fe-logo {
+            height: 38px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-title h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .header-title p {
+            font-size: 0.82rem;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .header-login a {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 9px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+
+        .header-login a:hover {
+            background: var(--accent-light);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #1e4a6e 100%);
+            color: white;
+            text-align: center;
+            padding: 50px 30px 45px;
+        }
+
+        .hero h2 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-header span {
+            font-size: 0.88rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e8ecf1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 4px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        /* Question Cards */
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 32px 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+            animation: fadeIn 0.35s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-number {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .question-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            line-height: 1.4;
+        }
+
+        /* Input styles */
+        .age-input-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .age-input-group input {
+            width: 120px;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .age-input-group input:focus {
+            border-color: var(--primary-light);
+        }
+
+        .age-input-group span {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Radio Options */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-item:hover {
+            border-color: var(--primary-light);
+            background: #f8fafd;
+        }
+
+        .option-item.selected {
+            border-color: var(--primary);
+            background: #eef3f9;
+        }
+
+        .option-item input[type="radio"] {
+            margin-top: 3px;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .option-label {
+            font-size: 0.95rem;
+            line-height: 1.45;
+        }
+
+        .option-label strong {
+            display: block;
+            margin-bottom: 2px;
+            color: var(--primary);
+        }
+
+        .option-label span {
+            color: var(--text-light);
+            font-size: 0.88rem;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 24px;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-back {
+            background: #e8ecf1;
+            color: var(--text);
+        }
+
+        .btn-back:hover {
+            background: #dde2e8;
+        }
+
+        .btn-next {
+            background: var(--primary);
+            color: white;
+            margin-left: auto;
+        }
+
+        .btn-next:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-results {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .btn-results:hover {
+            background: var(--accent-light);
+        }
+
+        /* Results Section */
+        #results-section {
+            display: none;
+        }
+
+        #results-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .results-header {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .risk-profile-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 8px 22px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+        }
+
+        .results-header h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .results-header p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Recommendation Cards */
+        .rec-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .rec-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .rec-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+        }
+
+        .rec-card.selected-compare {
+            border-color: var(--primary);
+            background: #f6f9fd;
+        }
+
+        .rec-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .rec-card-type {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .rec-badge {
+            background: var(--success);
+            color: white;
+            font-size: 0.72rem;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rec-card h4 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .rec-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .rec-card-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            display: block;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .hist-context {
+            margin-top: 14px;
+            background: #f0f6fb;
+            border-left: 3px solid var(--accent);
+            border-radius: 0 6px 6px 0;
+            padding: 9px 12px;
+            font-size: 0.78rem;
+            color: var(--text-light);
+            line-height: 1.45;
+        }
+
+        .hist-context strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.8rem;
+        }
+
+        .compare-check {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+        }
+
+        .compare-check input {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Compare Button */
+        .compare-btn-container {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .btn-compare {
+            background: var(--primary);
+            color: white;
+            padding: 14px 32px;
+            font-size: 1rem;
+        }
+
+        .btn-compare:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Comparison Table */
+        #comparison-section {
+            display: none;
+            margin-bottom: 24px;
+        }
+
+        #comparison-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .comparison-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+
+        .comparison-card h3 {
+            font-size: 1.15rem;
+            color: var(--primary);
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table th {
+            background: var(--primary);
+            color: white;
+            padding: 12px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .comparison-table th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .comparison-table th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        .comparison-table td {
+            padding: 11px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8fafd;
+        }
+
+        .comparison-table td:first-child {
+            font-weight: 600;
+            color: var(--primary);
+            white-space: nowrap;
+        }
+
+        /* Fund Detail Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 32px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #e8ecf1;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #dde2e8;
+        }
+
+        .modal h3 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 6px;
+            padding-right: 40px;
+        }
+
+        .modal .modal-type {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .modal-section {
+            margin-bottom: 18px;
+        }
+
+        .modal-section h4 {
+            font-size: 0.95rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .modal-section p, .modal-section ul {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .modal-section ul {
+            padding-left: 20px;
+        }
+
+        .modal-section li {
+            margin-bottom: 4px;
+        }
+
+        .modal-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .modal-stat {
+            background: #f5f7fb;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .modal-stat .stat-label {
+            font-size: 0.72rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-stat .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .cta-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+
+        .cta-section p {
+            opacity: 0.9;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .btn-cta {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--primary);
+            padding: 14px 36px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .btn-cta:hover {
+            background: var(--accent-light);
+        }
+
+        .restart-link {
+            display: inline-block;
+            margin-top: 14px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.88rem;
+        }
+
+        .restart-link:hover {
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 24px;
+            font-size: 0.82rem;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .header-content {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+
+            .header-left {
+                flex-direction: column;
+            }
+
+            .header-right {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .fe-logo {
+                height: 30px;
+            }
+
+            .city-seal {
+                height: 48px;
+            }
+
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+
+            .question-card {
+                padding: 22px 18px;
+            }
+
+            .modal {
+                padding: 22px;
+            }
+
+            .comparison-table {
+                font-size: 0.82rem;
+            }
+
+            .rec-card-stats {
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <div class="header-left">
+            <div class="header-title">
+                <h1>City of Murrieta</h1>
+                <p>457 Deferred Compensation Plan</p>
+            </div>
+        </div>
+        <div class="header-login">
+            <a href="https://www.nrsforu.com/iApp/rsc/login.x" target="_blank" rel="noopener">Log In to Nationwide</a>
+        </div>
+    </div>
+</header>
+
+<section class="hero" id="hero-section">
+    <h2>Investment Allocation Tool</h2>
+    <p>Answer a few questions to discover investment options that align with your retirement goals and risk tolerance.</p>
+</section>
+
+<div class="container">
+    <!-- Progress -->
+    <div class="progress-container" id="progress-container">
+        <div class="progress-header">
+            <span id="progress-text">Question 1 of 7</span>
+            <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Question 1: Current Age -->
+    <div class="question-card active" id="q1">
+        <div class="question-number">Question 1 of 7</div>
+        <h3>What is your current age?</h3>
+        <div class="age-input-group">
+            <input type="number" id="age-input" min="18" max="80" placeholder="e.g. 45">
+            <span>years old</span>
+        </div>
+        <div class="nav-buttons">
+            <div></div>
+            <button class="btn btn-next" onclick="nextQuestion(1)">Continue</button>
+        </div>
+    </div>
+
+    <!-- Question 2: Retirement Age -->
+    <div class="question-card" id="q2">
+        <div class="question-number">Question 2 of 7</div>
+        <h3>At what age do you plan to retire?</h3>
+        <div class="age-input-group">
+            <input type="number" id="retire-input" min="50" max="80" placeholder="e.g. 65">
+            <span>years old</span>
+        </div>
+        <div class="nav-buttons">
+            <button class="btn btn-back" onclick="prevQuestion(2)">Back</button>
+            <button class="btn btn-next" onclick="nextQuestion(2)">Continue</button>
+        </div>
+    </div>
+
+    <!-- Question 3: Risk Comfort -->
+    <div class="question-card" id="q3">
+        <div class="question-number">Question 3 of 7</div>
+        <h3>How would you describe your comfort level with investment risk?</h3>
+        <div class="options-list" id="q3-options">
+            <label class="option-item" onclick="selectOption(3, 1)">
+                <input type="radio" name="q3" value="1">
+                <div class="option-label">
+                    <strong>Very Conservative</strong>
+                    <span>I prefer stability and am willing to accept lower returns to avoid losses.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(3, 2)">
+                <input type="radio" name="q3" value="2">
+                <div class="option-label">
+                    <strong>Somewhat Conservative</strong>
+                    <span>I want mostly stable investments with a small portion in growth.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(3, 3)">
+                <input type="radio" name="q3" value="3">
+                <div class="option-label">
+                    <strong>Moderate</strong>
+                    <span>I want a balance between growth potential and stability.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(3, 4)">
+                <input type="radio" name="q3" value="4">
+                <div class="option-label">
+                    <strong>Somewhat Aggressive</strong>
+                    <span>I'm comfortable with fluctuations for higher long-term growth potential.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(3, 5)">
+                <input type="radio" name="q3" value="5">
+                <div class="option-label">
+                    <strong>Aggressive</strong>
+                    <span>I want maximum growth and can tolerate significant short-term losses.</span>
+                </div>
+            </label>
+        </div>
+        <div class="nav-buttons">
+            <button class="btn btn-back" onclick="prevQuestion(3)">Back</button>
+            <button class="btn btn-next" onclick="nextQuestion(3)">Continue</button>
+        </div>
+    </div>
+
+    <!-- Question 4: Reaction to decline -->
+    <div class="question-card" id="q4">
+        <div class="question-number">Question 4 of 7</div>
+        <h3>If your account lost 20% of its value in a market downturn, what would you do?</h3>
+        <div class="options-list" id="q4-options">
+            <label class="option-item" onclick="selectOption(4, 1)">
+                <input type="radio" name="q4" value="1">
+                <div class="option-label">
+                    <strong>Move everything to safer investments</strong>
+                    <span>I would immediately switch to more conservative options to prevent further losses.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(4, 2)">
+                <input type="radio" name="q4" value="2">
+                <div class="option-label">
+                    <strong>Move some to safer investments</strong>
+                    <span>I would shift a portion to conservative options to limit additional losses.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(4, 3)">
+                <input type="radio" name="q4" value="3">
+                <div class="option-label">
+                    <strong>Hold steady and wait for recovery</strong>
+                    <span>I would keep my current investments and wait for the market to rebound.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(4, 4)">
+                <input type="radio" name="q4" value="4">
+                <div class="option-label">
+                    <strong>Invest more to take advantage of lower prices</strong>
+                    <span>I see downturns as buying opportunities and would increase my contributions.</span>
+                </div>
+            </label>
+        </div>
+        <div class="nav-buttons">
+            <button class="btn btn-back" onclick="prevQuestion(4)">Back</button>
+            <button class="btn btn-next" onclick="nextQuestion(4)">Continue</button>
+        </div>
+    </div>
+
+    <!-- Question 5: Investment priority -->
+    <div class="question-card" id="q5">
+        <div class="question-number">Question 5 of 7</div>
+        <h3>Which statement best describes your primary investment goal?</h3>
+        <div class="options-list" id="q5-options">
+            <label class="option-item" onclick="selectOption(5, 1)">
+                <input type="radio" name="q5" value="1">
+                <div class="option-label">
+                    <strong>Preserve my savings</strong>
+                    <span>My top priority is protecting what I have, even if returns are minimal.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(5, 2)">
+                <input type="radio" name="q5" value="2">
+                <div class="option-label">
+                    <strong>Generate steady income</strong>
+                    <span>I want reliable, consistent returns with limited risk to my principal.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(5, 3)">
+                <input type="radio" name="q5" value="3">
+                <div class="option-label">
+                    <strong>Balance growth and income</strong>
+                    <span>I want a mix of growth and income that moderates risk over time.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(5, 4)">
+                <input type="radio" name="q5" value="4">
+                <div class="option-label">
+                    <strong>Maximize long-term growth</strong>
+                    <span>I am focused on growing my savings as much as possible before retirement.</span>
+                </div>
+            </label>
+        </div>
+        <div class="nav-buttons">
+            <button class="btn btn-back" onclick="prevQuestion(5)">Back</button>
+            <button class="btn btn-next" onclick="nextQuestion(5)">Continue</button>
+        </div>
+    </div>
+
+    <!-- Question 6: Experience -->
+    <div class="question-card" id="q6">
+        <div class="question-number">Question 6 of 7</div>
+        <h3>How would you rate your experience with investing?</h3>
+        <div class="options-list" id="q6-options">
+            <label class="option-item" onclick="selectOption(6, 1)">
+                <input type="radio" name="q6" value="1">
+                <div class="option-label">
+                    <strong>Beginner</strong>
+                    <span>I have little to no experience and prefer a hands-off approach.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(6, 2)">
+                <input type="radio" name="q6" value="2">
+                <div class="option-label">
+                    <strong>Some Experience</strong>
+                    <span>I understand basics like stocks and bonds but haven't actively managed investments.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(6, 3)">
+                <input type="radio" name="q6" value="3">
+                <div class="option-label">
+                    <strong>Experienced</strong>
+                    <span>I have invested in multiple asset types and understand diversification and risk.</span>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(6, 4)">
+                <input type="radio" name="q6" value="4">
+                <div class="option-label">
+                    <strong>Very Experienced</strong>
+                    <span>I actively manage investments and have a strong understanding of market dynamics.</span>
+                </div>
+            </label>
+        </div>
+        <div class="nav-buttons">
+            <button class="btn btn-back" onclick="prevQuestion(6)">Back</button>
+            <button class="btn btn-next" onclick="nextQuestion(6)">Continue</button>
+        </div>
+    </div>
+
+    <!-- Question 7: Withdrawal timeline -->
+    <div class="question-card" id="q7">
+        <div class="question-number">Question 7 of 7</div>
+        <h3>When do you expect to begin withdrawing a significant portion of this investment?</h3>
+        <div class="options-list" id="q7-options">
+            <label class="option-item" onclick="selectOption(7, 1)">
+                <input type="radio" name="q7" value="1">
+                <div class="option-label">
+                    <strong>Within 1–2 years</strong>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(7, 2)">
+                <input type="radio" name="q7" value="2">
+                <div class="option-label">
+                    <strong>In 3–5 years</strong>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(7, 3)">
+                <input type="radio" name="q7" value="3">
+                <div class="option-label">
+                    <strong>In 6–10 years</strong>
+                </div>
+            </label>
+            <label class="option-item" onclick="selectOption(7, 4)">
+                <input type="radio" name="q7" value="4">
+                <div class="option-label">
+                    <strong>In more than 10 years</strong>
+                </div>
+            </label>
+        </div>
+        <div class="nav-buttons">
+            <button class="btn btn-back" onclick="prevQuestion(7)">Back</button>
+            <button class="btn btn-results" onclick="showResults()">View My Recommendations</button>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results-section">
+        <div class="results-header">
+            <div class="risk-profile-badge" id="risk-badge">Moderate</div>
+            <h3 id="results-title">Your Personalized Recommendations</h3>
+            <p id="results-description"></p>
+        </div>
+
+        <div class="rec-cards" id="rec-cards"></div>
+
+        <div class="compare-btn-container">
+            <button class="btn btn-compare" id="compare-btn" onclick="compareSelected()" disabled>
+                Select 2 or more options above to compare
+            </button>
+        </div>
+
+        <div id="comparison-section">
+            <div class="comparison-card">
+                <h3>Side-by-Side Comparison</h3>
+                <div id="comparison-table-container"></div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h3>Ready to Invest?</h3>
+            <p>Log in to your Nationwide retirement account to select your investment allocation and start putting your plan into action.</p>
+            <a href="https://www.nrsforu.com/iApp/rsc/login.x" target="_blank" rel="noopener" class="btn-cta">Log In to Nationwide</a>
+            <br>
+            <span class="restart-link" onclick="restart()">Retake the questionnaire</span>
+        </div>
+    </div>
+</div>
+
+<!-- Fund Detail Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal" id="modal-content">
+        <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+        <div id="modal-body"></div>
+    </div>
+</div>
+
+<footer>
+    <p>City of Murrieta 457 Deferred Compensation Plan</p>
+    <p>This tool is for educational purposes only and does not constitute investment advice.<br>
+    Consult a financial advisor before making investment decisions. Past performance does not guarantee future results.<br>
+    Fund performance data sourced from Yahoo Finance / Morningstar. Trailing returns as of 2/28/2026. Updated Q1 2026.</p>
+</footer>
+
+<script>
+// State
+let currentQuestion = 1;
+const totalQuestions = 7;
+const answers = {};
+let selectedCompare = new Set();
+
+// Fund Data - from City of Murrieta Q4 2025 Monitoring Report & Model Portfolio Report
+// Investment Data as of 12/31/2025
+const fundData = {
+    modelAggressive: {
+        id: 'modelAggressive',
+        type: 'Model Portfolio',
+        name: 'Murrieta Aggressive Growth Model',
+        badge: 'Best Match',
+        shortDesc: 'A diversified portfolio of plan funds targeting 85% equity and 15% fixed income, designed for participants seeking maximum long-term growth.',
+        riskLevel: 'Aggressive',
+        stockBond: '85% Equity / 15% Fixed Income',
+        expenseRatio: '0.13% (weighted)',
+        turnover: 'Low',
+        minInvestment: 'None',
+        bestFor: 'Participants with 20+ years to retirement who want maximum growth potential.',
+        performance: { yr1: '16.95%', yr3: '18.96%', yr5: '9.28%', yr10: '11.75%' },
+        stats: { sharpe3yr: '1.14', stdDev3yr: '11.62%', inception: '9/1/2015', rebalance: 'Quarterly' },
+        description: 'The Murrieta Aggressive Growth Model is constructed using individual funds available in the City of Murrieta 457 plan. It targets approximately 85% equity across U.S. large-cap, mid-cap, small-cap, international, and real estate, with about 15% in fixed income for modest diversification. The portfolio is rebalanced quarterly and has outperformed its peer group benchmark since inception.',
+        allocation: [
+            '35.00% Vanguard Large Cap Index Admiral (VLCAX)',
+            '14.98% Vanguard Growth Index Admiral (VIGAX)',
+            '10.05% Vanguard Total Intl Stock Index Admiral (VTIAX)',
+            '10.00% Baird Core Plus Bond Inst (BCOIX)',
+            '9.95% Vanguard International Growth Adm (VWILX)',
+            '5.08% Vanguard Real Estate Index Admiral',
+            '5.00% iShares Russell Mid-Cap Index K (BRMKX)',
+            '4.98% BlackRock High Yield K (BRHYX)',
+            '4.96% iShares Russell Small/Mid-Cap Idx K (BSMKX)'
+        ],
+        pros: ['Highest growth potential: 18.96% annualized 3-year return', 'Low weighted expense ratio of 0.13%', 'Broad diversification across 9 funds and multiple asset classes', 'Quarterly rebalancing maintains target allocation'],
+        cons: ['Highest volatility (11.62% standard deviation)', 'Requires understanding that short-term losses are normal', 'Model portfolio is managed by the plan; participant selects it as a single option']
+    },
+    modelModerateGrowth: {
+        id: 'modelModerateGrowth',
+        type: 'Model Portfolio',
+        name: 'Murrieta Moderate Growth Model',
+        badge: 'Best Match',
+        shortDesc: 'A growth-oriented portfolio targeting 75% equity and 25% fixed income, designed for participants seeking strong growth with moderate risk.',
+        riskLevel: 'Moderate Growth',
+        stockBond: '75% Equity / 25% Fixed Income',
+        expenseRatio: '0.10% (weighted)',
+        turnover: 'Low',
+        minInvestment: 'None',
+        bestFor: 'Participants with 15-25 years to retirement seeking growth with some downside protection.',
+        performance: { yr1: '16.35%', yr3: '17.71%', yr5: '8.82%', yr10: '10.90%' },
+        stats: { sharpe3yr: '1.16', stdDev3yr: '10.44%', inception: '9/1/2015', rebalance: 'Quarterly' },
+        description: 'The Murrieta Moderate Growth Model targets 75% equity and 25% fixed income. It includes broad U.S. equity exposure, international diversification, real estate, and a meaningful bond allocation through intermediate-term and core-plus bond funds. The portfolio has delivered strong risk-adjusted returns with a 1.16 Sharpe ratio over 3 years.',
+        allocation: [
+            '40.00% Vanguard Large Cap Index Admiral (VLCAX)',
+            '15.00% Vanguard Interm-Term Bond Index Adm (VBILX)',
+            '10.00% Vanguard Growth Index Admiral (VIGAX)',
+            '10.00% Vanguard Total Intl Stock Index Admiral (VTIAX)',
+            '5.00% Baird Core Plus Bond Inst (BCOIX)',
+            '5.00% BlackRock High Yield K (BRHYX)',
+            '5.00% Vanguard International Growth Adm (VWILX)',
+            '5.00% iShares Russell Mid-Cap Index K (BRMKX)',
+            '3.00% Vanguard Real Estate Index Admiral',
+            '2.00% iShares Russell Small/Mid-Cap Idx K (BSMKX)'
+        ],
+        pros: ['Strong growth with moderate risk: 17.71% annualized 3-year return', 'Best Sharpe ratio among models (1.16)', 'Very low weighted expense ratio of 0.10%', 'Quarterly rebalancing maintains target allocation'],
+        cons: ['Moderate volatility (10.44% standard deviation)', 'Less growth potential than the Aggressive model', 'Model portfolio is managed by the plan; participant selects it as a single option']
+    },
+    modelBalanced: {
+        id: 'modelBalanced',
+        type: 'Model Portfolio',
+        name: 'Murrieta Balanced Model',
+        badge: 'Best Match',
+        shortDesc: 'A balanced portfolio targeting 65% equity, 25% fixed income, and 10% stable value/cash for growth with meaningful stability.',
+        riskLevel: 'Moderate',
+        stockBond: '65% Equity / 25% Fixed / 10% SV/Cash',
+        expenseRatio: '0.08% (weighted)',
+        turnover: 'Low',
+        minInvestment: 'None',
+        bestFor: 'Participants with 10-20 years to retirement seeking a balance of growth and stability.',
+        performance: { yr1: '14.76%', yr3: '17.14%', yr5: '9.14%', yr10: '10.51%' },
+        stats: { sharpe3yr: '1.27', stdDev3yr: '9.02%', inception: '9/1/2015', rebalance: 'Quarterly' },
+        description: 'The Murrieta Balanced Model blends 65% equity, 25% fixed income, and 10% stable value/cash. It offers solid growth potential with meaningful downside protection. This model boasts the highest Sharpe ratio (1.27) among all four models, indicating the best risk-adjusted returns, and the lowest weighted expense ratio at just 0.08%.',
+        allocation: [
+            '45.00% Vanguard Large Cap Index Admiral (VLCAX)',
+            '15.00% Vanguard Interm-Term Bond Index Adm (VBILX)',
+            '10.00% Vanguard Growth Index Admiral (VIGAX)',
+            '10.00% Vanguard Treasury Money Market Investor (VUSXX)',
+            '5.00% BlackRock High Yield K (BRHYX)',
+            '5.00% Vanguard Inflation-Protected Secs Adm (VAIPX)',
+            '5.00% Vanguard Total Intl Stock Index Admiral (VTIAX)',
+            '3.00% iShares Russell Mid-Cap Index K (BRMKX)',
+            '2.00% iShares Russell Small/Mid-Cap Idx K (BSMKX)'
+        ],
+        pros: ['Best risk-adjusted returns: Sharpe ratio of 1.27', 'Lowest expense ratio of all models at 0.08%', 'Stable value/cash allocation provides downside cushion', 'Quarterly rebalancing maintains target allocation'],
+        cons: ['Lower growth potential than Moderate Growth and Aggressive models', 'Cash allocation may drag on returns in strong markets', 'Model portfolio is managed by the plan; participant selects it as a single option']
+    },
+    modelConservative: {
+        id: 'modelConservative',
+        type: 'Model Portfolio',
+        name: 'Murrieta Conservative Model',
+        badge: 'Best Match',
+        shortDesc: 'A stability-focused portfolio targeting 45% equity, 40% fixed income, and 15% stable value/cash, emphasizing capital preservation.',
+        riskLevel: 'Conservative',
+        stockBond: '45% Equity / 40% Fixed / 15% SV/Cash',
+        expenseRatio: '0.10% (weighted)',
+        turnover: 'Low',
+        minInvestment: 'None',
+        bestFor: 'Participants nearing retirement or who prioritize capital preservation and income.',
+        performance: { yr1: '12.47%', yr3: '13.16%', yr5: '6.74%', yr10: '8.17%' },
+        stats: { sharpe3yr: '1.09', stdDev3yr: '7.15%', inception: '9/1/2015', rebalance: 'Quarterly' },
+        description: 'The Murrieta Conservative Model targets 45% equity, 40% fixed income, and 15% stable value/cash. It is designed for participants approaching or in retirement who prioritize stability and income. The significant bond and stable value allocation provides a meaningful cushion against market downturns while still offering growth through its equity holdings.',
+        allocation: [
+            '30.00% Vanguard Large Cap Index Admiral (VLCAX)',
+            '20.00% Vanguard Interm-Term Bond Index Adm (VBILX)',
+            '15.00% Vanguard Treasury Money Market Investor (VUSXX)',
+            '10.00% Vanguard Inflation-Protected Secs Adm (VAIPX)',
+            '5.00% BlackRock High Yield K (BRHYX)',
+            '5.00% Vanguard Growth Index Admiral (VIGAX)',
+            '5.00% Vanguard Multi-Sector Income Bond Adm',
+            '5.00% Vanguard Total Intl Stock Index Admiral (VTIAX)',
+            '3.00% iShares Russell Mid-Cap Index K (BRMKX)',
+            '2.00% iShares Russell Small/Mid-Cap Idx K (BSMKX)'
+        ],
+        pros: ['Lowest volatility of all models (7.15% standard deviation)', 'Significant stable value and bond allocation for capital preservation', '15% money market provides liquidity and safety', 'Quarterly rebalancing maintains target allocation'],
+        cons: ['Lowest growth potential among the four models', 'May not keep pace with inflation in low-rate environments', 'Model portfolio is managed by the plan; participant selects it as a single option']
+    },
+    targetDate: {
+        id: 'targetDate',
+        type: 'Target Date Fund',
+        name: '',  // Set dynamically
+        badge: '',
+        shortDesc: 'A Vanguard Target Retirement Fund that automatically adjusts its stock/bond mix to become more conservative as you approach your target retirement year.',
+        riskLevel: '',  // Set dynamically
+        stockBond: '',  // Set dynamically
+        expenseRatio: '0.08%',
+        turnover: 'Low',
+        minInvestment: 'None',
+        bestFor: 'Participants who want a professionally managed, hands-off approach to retirement investing.',
+        description: 'Vanguard Target Retirement Funds are all-in-one solutions available in the City of Murrieta plan. You choose the fund closest to your expected retirement year, and Vanguard automatically adjusts the asset allocation over time through a "glide path." The fund invests in a mix of Vanguard mutual funds, shifting from stocks to bonds as retirement approaches. These funds are among the most popular options in the plan.',
+        allocation: [],  // Set dynamically
+        pros: ['Fully automatic rebalancing and glide path', 'Simple one-fund solution requiring no maintenance', 'Very low expense ratio of 0.08%', 'Vanguard Target Retirement Funds are the largest target date series in the U.S.'],
+        cons: ['Less control over individual holdings', 'One-size-fits-all approach may not suit everyone', 'Fixed glide path does not account for individual circumstances']
+    },
+    lifestrategyGrowth: {
+        id: 'lifestrategyGrowth',
+        type: 'Allocation Fund',
+        name: 'Vanguard LifeStrategy Growth Fund (VASGX)',
+        badge: '',
+        shortDesc: 'Invests in a mix of Vanguard funds with approximately 80% in stocks and 20% in bonds, seeking capital appreciation and some current income.',
+        riskLevel: 'Moderately Aggressive',
+        stockBond: '80% Stocks / 20% Bonds',
+        expenseRatio: '0.12%',
+        turnover: 'Low',
+        minInvestment: 'None',
+        bestFor: 'Participants with a long time horizon who want a growth-oriented, hands-off solution with a fixed allocation.',
+        performance: { yr1: '21.81%', yr3: '17.36%', yr5: '9.26%', yr10: '10.94%' },
+        description: 'The Vanguard LifeStrategy Growth Fund invests in a mix of Vanguard mutual funds with approximately 80% allocated to stocks and 20% to bonds. The fund provides broad exposure to U.S. and international equity and fixed-income markets. Unlike a target date fund, this allocation remains fixed and does not become more conservative over time, making it ideal for investors who are comfortable maintaining a growth-oriented profile throughout their investment horizon.',
+        allocation: [
+            '~48% Vanguard Total Stock Market Index',
+            '~32% Vanguard Total International Stock Index',
+            '~14% Vanguard Total Bond Market II Index',
+            '~6% Vanguard Total International Bond II Index'
+        ],
+        pros: ['Strong long-term growth potential with 80% equity allocation', 'Very low expense ratio of 0.12%', 'Broad global diversification across U.S. and international markets', 'Automatic rebalancing within the fund'],
+        cons: ['Fixed allocation does not become more conservative over time', 'Higher volatility than moderate or conservative options', 'No stable value, TIPS, or real estate component']
+    },
+    lifestrategyConservative: {
+        id: 'lifestrategyConservative',
+        type: 'Allocation Fund',
+        name: 'Vanguard LifeStrategy Conservative Growth Fund (VSCGX)',
+        badge: '',
+        shortDesc: 'Invests in a mix of Vanguard funds with approximately 40% in stocks and 60% in bonds, seeking current income and low to moderate capital appreciation.',
+        riskLevel: 'Conservative',
+        stockBond: '40% Stocks / 60% Bonds',
+        expenseRatio: '0.12%',
+        turnover: 'Low',
+        minInvestment: 'None',
+        bestFor: 'Participants nearing retirement or with a low risk tolerance who still want some growth exposure.',
+        performance: { yr1: '13.58%', yr3: '11.19%', yr5: '4.84%', yr10: '6.45%' },
+        description: 'The Vanguard LifeStrategy Conservative Growth Fund invests in a mix of Vanguard mutual funds according to an asset-allocation strategy that reflects approximately 60% fixed-income securities and 40% common stocks. The indirect fixed-income holdings include a diversified mix of short-, intermediate-, and long-term U.S. government, agency, and investment-grade corporate bonds, as well as international bonds. This conservative allocation provides stability and income while maintaining some equity exposure to help offset inflation.',
+        allocation: [
+            '~24% Vanguard Total Stock Market Index',
+            '~16% Vanguard Total International Stock Index',
+            '~42% Vanguard Total Bond Market II Index',
+            '~18% Vanguard Total International Bond II Index'
+        ],
+        pros: ['Low volatility with meaningful bond allocation', 'Broad global diversification for a conservative fund', 'Very low expense ratio of 0.12%', 'Automatic rebalancing within the fund'],
+        cons: ['Fixed allocation does not adjust with age', 'Limited upside in strong equity markets', 'May not provide enough growth for younger investors']
+    },
+    puritan: {
+        id: 'puritan',
+        type: 'Allocation Fund',
+        name: 'Fidelity Puritan K6 Fund (FPKFX)',
+        badge: '',
+        shortDesc: 'An actively managed balanced fund investing approximately 60% in stocks and 40% in bonds, seeking income and capital growth consistent with reasonable risk.',
+        riskLevel: 'Moderate',
+        stockBond: '60% Stocks / 40% Bonds',
+        expenseRatio: '0.34%',
+        turnover: 'Moderate',
+        minInvestment: 'None',
+        bestFor: 'Participants seeking a single balanced fund with active management and a moderate risk profile.',
+        performance: { yr1: '13.61%', yr3: '16.74%', yr5: '9.47%', yr10: 'N/A', sinceInception: '9.47%' },
+        description: 'The Fidelity Puritan K6 Fund seeks income and capital growth consistent with reasonable risk. It invests approximately 60% in stocks and other equity securities and the remainder in bonds and other debt securities, including lower-quality debt securities. The fund invests at least 25% of total assets in fixed-income senior securities and may invest in both domestic and foreign issuers. Unlike the index-based Vanguard options, the Puritan fund relies on Fidelity\'s research team to actively select individual securities.',
+        allocation: [
+            '~60% Equities (U.S. and International)',
+            '~40% Fixed Income (Investment-grade, high-yield, and other bonds)',
+            'At least 25% in fixed-income senior securities',
+            'Actively managed with flexibility to adjust holdings'
+        ],
+        pros: ['Active management can potentially add value in changing markets', 'Balanced approach seeks both income and capital growth', 'Manager flexibility to adjust to market conditions', 'K6 share class offers institutional pricing'],
+        cons: ['Higher expense ratio (0.34%) than index-based alternatives', 'Active management does not guarantee outperformance', 'Less transparency in holdings compared to index funds']
+    },
+    wellesley: {
+        id: 'wellesley',
+        type: 'Allocation Fund',
+        name: 'Vanguard Wellesley Income Admiral (VWIAX)',
+        badge: '',
+        shortDesc: 'A conservative allocation fund investing approximately 60-65% in bonds and 35-40% in dividend-paying stocks, focused on income and capital preservation.',
+        riskLevel: 'Conservative',
+        stockBond: '35-40% Stocks / 60-65% Bonds',
+        expenseRatio: '0.16%',
+        turnover: 'Low to Moderate',
+        minInvestment: 'None',
+        bestFor: 'Participants at or near retirement who prioritize income and capital preservation over growth.',
+        performance: { yr1: '10.84%', yr3: '9.20%', yr5: '5.23%', yr10: '6.46%' },
+        description: 'The Vanguard Wellesley Income Admiral Fund seeks long-term growth of income and a high and sustainable level of current income, along with moderate long-term capital appreciation. The fund invests approximately 60-65% of its assets in investment-grade fixed income securities, including corporate, U.S. Treasury, and government agency bonds, as well as mortgage-backed securities. The remaining 35-40% is invested in common stocks of companies with a history of above-average dividends or expectations of increasing dividends.',
+        allocation: [
+            '~60-65% Investment-grade fixed income (corporate, Treasury, agency, MBS)',
+            '~35-40% Equities (high-quality, dividend-paying stocks)',
+            'Managed by Wellington Management Company'
+        ],
+        pros: ['Strong emphasis on income and capital preservation', 'Managed by Wellington Management, one of the oldest investment firms', 'Low expense ratio of 0.16% for an actively managed fund', 'Focus on dividend-paying stocks provides income stability'],
+        cons: ['Limited growth potential in strong equity markets', 'Not suitable for younger participants seeking aggressive growth', 'Currently on Watch status in the plan monitoring report']
+    }
+};
+
+// Select an option
+function selectOption(qNum, value) {
+    answers['q' + qNum] = value;
+    document.querySelectorAll(`#q${qNum}-options .option-item`).forEach(item => {
+        item.classList.remove('selected');
+    });
+    event.currentTarget.closest('.option-item').classList.add('selected');
+}
+
+// Navigate questions
+function nextQuestion(current) {
+    if (current === 1) {
+        const age = parseInt(document.getElementById('age-input').value);
+        if (!age || age < 18 || age > 80) {
+            document.getElementById('age-input').style.borderColor = '#e74c3c';
+            return;
+        }
+        answers.age = age;
+    } else if (current === 2) {
+        const retire = parseInt(document.getElementById('retire-input').value);
+        if (!retire || retire < 50 || retire > 80) {
+            document.getElementById('retire-input').style.borderColor = '#e74c3c';
+            return;
+        }
+        if (retire <= (answers.age || 0)) {
+            document.getElementById('retire-input').style.borderColor = '#e74c3c';
+            return;
+        }
+        answers.retireAge = retire;
+    } else {
+        if (!answers['q' + current]) return;
+    }
+
+    document.getElementById('q' + current).classList.remove('active');
+    currentQuestion = current + 1;
+    document.getElementById('q' + currentQuestion).classList.add('active');
+    updateProgress();
+}
+
+function prevQuestion(current) {
+    document.getElementById('q' + current).classList.remove('active');
+    currentQuestion = current - 1;
+    document.getElementById('q' + currentQuestion).classList.add('active');
+    updateProgress();
+}
+
+function updateProgress() {
+    const pct = Math.round(((currentQuestion - 1) / totalQuestions) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+    document.getElementById('progress-text').textContent = `Question ${currentQuestion} of ${totalQuestions}`;
+}
+
+// Historical long-term return context by stock allocation %
+function getHistoricalContext(stockBond) {
+    const match = stockBond.match(/(\d+)(?:-\d+)?%\s*Stocks?/i);
+    const pct = match ? parseInt(match[1]) : 60;
+    if (pct >= 85) return { avg: '~9–10%', note: 'Portfolios near 85–100% stocks have historically delivered the highest long-term growth. Returns can vary significantly from year to year.' };
+    if (pct >= 75) return { avg: '~8–9%',  note: 'A 75–85% stock allocation has historically produced strong long-term growth with a meaningful bond allocation for stability.' };
+    if (pct >= 65) return { avg: '~8%',    note: 'A 65–75% stock allocation offers solid long-term growth with reduced volatility compared to all-equity portfolios.' };
+    if (pct >= 55) return { avg: '~7–8%',  note: 'A 55–65% stock allocation balances growth and stability. The bond allocation helps moderate short-term fluctuations.' };
+    if (pct >= 45) return { avg: '~7%',    note: 'A balanced 45–55% stock allocation has historically produced moderate growth with notably lower year-to-year volatility.' };
+    if (pct >= 35) return { avg: '~6–7%',  note: 'A 35–45% stock allocation tilts toward income and capital preservation with a greater emphasis on fixed income.' };
+    return                { avg: '~5–6%',  note: 'A conservative allocation under 35% stocks prioritizes preservation and income with historically modest but more stable growth.' };
+}
+
+// Calculate risk score and show results
+function showResults() {
+    if (!answers.q7) return;
+
+    const yearsToRetire = answers.retireAge - answers.age;
+
+    // Time horizon score (0-5)
+    let timeScore;
+    if (yearsToRetire >= 25) timeScore = 5;
+    else if (yearsToRetire >= 20) timeScore = 4;
+    else if (yearsToRetire >= 15) timeScore = 3;
+    else if (yearsToRetire >= 10) timeScore = 2;
+    else if (yearsToRetire >= 5) timeScore = 1;
+    else timeScore = 0;
+
+    // Risk tolerance score from questions 3-7
+    const riskScore = (answers.q3 || 3) + (answers.q4 || 3) + (answers.q5 || 3) + (answers.q6 || 2) + (answers.q7 || 2);
+
+    // Combined score
+    const totalScore = timeScore + riskScore;
+
+    let riskProfile, modelFund, targetDateFund, allocationFund, profileDesc;
+
+    if (totalScore <= 10) {
+        riskProfile = 'Conservative';
+        modelFund = 'modelConservative';
+        allocationFund = 'wellesley';
+        profileDesc = `Based on your responses, you have a conservative investment profile. With ${yearsToRetire} years until retirement, your recommendations emphasize capital preservation and income with modest growth exposure.`;
+    } else if (totalScore <= 14) {
+        riskProfile = 'Moderately Conservative';
+        modelFund = 'modelConservative';
+        allocationFund = 'lifestrategyConservative';
+        profileDesc = `Based on your responses, you have a moderately conservative profile. With ${yearsToRetire} years until retirement, your recommendations balance stability with enough growth to help stay ahead of inflation.`;
+    } else if (totalScore <= 18) {
+        riskProfile = 'Moderate';
+        modelFund = 'modelBalanced';
+        allocationFund = 'puritan';
+        profileDesc = `Based on your responses, you have a moderate investment profile. With ${yearsToRetire} years until retirement, your recommendations seek a balance between growth potential and downside protection.`;
+    } else if (totalScore <= 22) {
+        riskProfile = 'Moderate Growth';
+        modelFund = 'modelModerateGrowth';
+        allocationFund = 'lifestrategyGrowth';
+        profileDesc = `Based on your responses, you have a moderate growth profile. With ${yearsToRetire} years until retirement, your recommendations favor growth with a meaningful bond allocation for stability.`;
+    } else if (totalScore <= 26) {
+        riskProfile = 'Moderately Aggressive';
+        modelFund = 'modelAggressive';
+        allocationFund = 'lifestrategyGrowth';
+        profileDesc = `Based on your responses, you have a moderately aggressive profile. With ${yearsToRetire} years until retirement, your recommendations emphasize strong long-term growth.`;
+    } else {
+        riskProfile = 'Aggressive';
+        modelFund = 'modelAggressive';
+        allocationFund = 'lifestrategyGrowth';
+        profileDesc = `Based on your responses, you have an aggressive investment profile. With ${yearsToRetire} years until retirement, your recommendations emphasize maximum long-term growth.`;
+    }
+
+    // Configure target date fund based on retirement year
+    const retireYear = new Date().getFullYear() + yearsToRetire;
+    const targetYear = Math.round(retireYear / 5) * 5;
+    const tdFund = {...fundData.targetDate};
+    tdFund.name = `Vanguard Target Retirement ${targetYear} Fund`;
+
+    if (yearsToRetire > 25) {
+        tdFund.stockBond = '~90% Stocks / ~10% Bonds';
+        tdFund.riskLevel = 'Aggressive (becomes more conservative over time)';
+        tdFund.performance = { yr1: '23.99%', yr3: '18.99%', yr5: '10.44%', yr10: '12.08%' }; // VFFVX
+        tdFund.allocation = ['~54% Vanguard Total Stock Market Index', '~36% Vanguard Total International Stock Index', '~7% Vanguard Total Bond Market II Index', '~3% Vanguard Total International Bond II Index', 'Glide path automatically adjusts toward bonds as you near ' + targetYear];
+    } else if (yearsToRetire > 20) {
+        tdFund.stockBond = '~85% Stocks / ~15% Bonds';
+        tdFund.riskLevel = 'Moderately Aggressive (becomes more conservative over time)';
+        tdFund.performance = { yr1: '23.93%', yr3: '18.97%', yr5: '10.43%', yr10: '12.08%' }; // VFIFX
+        tdFund.allocation = ['~51% Vanguard Total Stock Market Index', '~34% Vanguard Total International Stock Index', '~10% Vanguard Total Bond Market II Index', '~5% Vanguard Total International Bond II Index', 'Glide path automatically adjusts toward bonds as you near ' + targetYear];
+    } else if (yearsToRetire > 15) {
+        tdFund.stockBond = '~78% Stocks / ~22% Bonds';
+        tdFund.riskLevel = 'Moderate Growth (becomes more conservative over time)';
+        tdFund.performance = { yr1: '22.26%', yr3: '17.99%', yr5: '9.84%', yr10: '11.77%' }; // VTIVX
+        tdFund.allocation = ['~47% Vanguard Total Stock Market Index', '~31% Vanguard Total International Stock Index', '~15% Vanguard Total Bond Market II Index', '~7% Vanguard Total International Bond II Index', 'Glide path automatically adjusts toward bonds as you near ' + targetYear];
+    } else if (yearsToRetire > 10) {
+        tdFund.stockBond = '~70% Stocks / ~30% Bonds';
+        tdFund.riskLevel = 'Moderate (becomes more conservative over time)';
+        tdFund.performance = { yr1: '20.74%', yr3: '16.84%', yr5: '9.02%', yr10: '11.11%' }; // VFORX
+        tdFund.allocation = ['~42% Vanguard Total Stock Market Index', '~28% Vanguard Total International Stock Index', '~21% Vanguard Total Bond Market II Index', '~9% Vanguard Total International Bond II Index', 'Glide path automatically adjusts toward bonds as you near ' + targetYear];
+    } else if (yearsToRetire > 5) {
+        tdFund.stockBond = '~55% Stocks / ~45% Bonds';
+        tdFund.riskLevel = 'Moderately Conservative (near target date)';
+        tdFund.performance = { yr1: '19.24%', yr3: '15.67%', yr5: '8.17%', yr10: '10.27%' }; // VTTHX
+        tdFund.allocation = ['~33% Vanguard Total Stock Market Index', '~22% Vanguard Total International Stock Index', '~31% Vanguard Total Bond Market II Index', '~14% Vanguard Total International Bond II Index', 'Glide path automatically adjusts toward bonds as you near ' + targetYear];
+    } else {
+        tdFund.stockBond = '~30% Stocks / ~70% Bonds';
+        tdFund.riskLevel = 'Conservative (at or past target date)';
+        tdFund.performance = { yr1: '17.62%', yr3: '14.46%', yr5: '7.31%', yr10: '9.41%' }; // VTHRX
+        tdFund.allocation = ['~18% Vanguard Total Stock Market Index', '~12% Vanguard Total International Stock Index', '~49% Vanguard Total Bond Market II Index', '~21% Vanguard Total International Bond II Index', 'Designed for investors at or past retirement'];
+    }
+
+    // Store the target date fund data
+    fundData.targetDateDynamic = tdFund;
+
+    // Set up results
+    document.getElementById('risk-badge').textContent = riskProfile;
+    document.getElementById('results-description').textContent = profileDesc;
+
+    // Build recommendation cards
+    const recommendations = [
+        { key: modelFund, isBestMatch: true },
+        { key: 'targetDateDynamic', isBestMatch: false },
+        { key: allocationFund, isBestMatch: false }
+    ];
+
+    const cardsHtml = recommendations.map((rec, idx) => {
+        const fund = rec.key === 'targetDateDynamic' ? fundData.targetDateDynamic : fundData[rec.key];
+        return `
+            <div class="rec-card" id="rec-${idx}" onclick="openFundDetail('${rec.key}')">
+                <label class="compare-check" onclick="event.stopPropagation()">
+                    <input type="checkbox" onchange="toggleCompare('${rec.key}', this.checked)" value="${rec.key}">
+                </label>
+                <div class="rec-card-header">
+                    <span class="rec-card-type">${fund.type}</span>
+                    ${rec.isBestMatch ? '<span class="rec-badge">Best Match</span>' : ''}
+                </div>
+                <h4>${fund.name}</h4>
+                <p>${fund.shortDesc}</p>
+                <div class="rec-card-stats">
+                    <div class="stat">
+                        <span class="stat-label">Allocation</span>
+                        <span class="stat-value">${fund.stockBond}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Expense Ratio</span>
+                        <span class="stat-value">${fund.expenseRatio}</span>
+                    </div>
+                    ${fund.performance ? `<div class="stat">
+                        <span class="stat-label">1-Yr Return</span>
+                        <span class="stat-value">${fund.performance.yr1}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">${fund.performance.yr10 !== 'N/A' ? '10-Yr Return' : 'Since Inception'}</span>
+                        <span class="stat-value">${fund.performance.yr10 !== 'N/A' ? fund.performance.yr10 : (fund.performance.sinceInception || 'N/A')}</span>
+                    </div>` : ''}
+                </div>
+                ${(() => { const h = getHistoricalContext(fund.stockBond); return '<div class="hist-context"><strong>Historical Long-Term Avg: ' + h.avg + '</strong>' + h.note + '</div>'; })()}
+            </div>
+        `;
+    }).join('');
+
+    document.getElementById('rec-cards').innerHTML = cardsHtml;
+
+    // Show results, hide questionnaire
+    document.getElementById('q' + currentQuestion).classList.remove('active');
+    document.getElementById('progress-container').style.display = 'none';
+    document.getElementById('results-section').classList.add('active');
+    document.getElementById('hero-section').querySelector('h2').textContent = 'Your Investment Recommendations';
+    document.getElementById('hero-section').querySelector('p').textContent = `Profile: ${riskProfile} | ${yearsToRetire} years to retirement`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    selectedCompare.clear();
+    document.getElementById('comparison-section').classList.remove('active');
+}
+
+// Fund detail modal
+function openFundDetail(key) {
+    const fund = key === 'targetDateDynamic' ? fundData.targetDateDynamic : fundData[key];
+    if (!fund) return;
+
+    const perfHtml = fund.performance ? `
+        <div class="modal-section">
+            <h4>Performance (as of 2/28/2026, net of 12 bps admin fee)</h4>
+            <div class="modal-stats-grid">
+                <div class="modal-stat"><span class="stat-label">1-Year</span><span class="stat-value">${fund.performance.yr1}</span></div>
+                <div class="modal-stat"><span class="stat-label">3-Year Ann.</span><span class="stat-value">${fund.performance.yr3}</span></div>
+                <div class="modal-stat"><span class="stat-label">5-Year Ann.</span><span class="stat-value">${fund.performance.yr5}</span></div>
+                <div class="modal-stat"><span class="stat-label">10-Year Ann.</span><span class="stat-value">${fund.performance.yr10}</span></div>
+            </div>
+            ${fund.stats ? `<div class="modal-stats-grid" style="margin-top:8px">
+                <div class="modal-stat"><span class="stat-label">Sharpe Ratio (3yr)</span><span class="stat-value">${fund.stats.sharpe3yr}</span></div>
+                <div class="modal-stat"><span class="stat-label">Std Deviation (3yr)</span><span class="stat-value">${fund.stats.stdDev3yr}</span></div>
+                <div class="modal-stat"><span class="stat-label">Inception</span><span class="stat-value">${fund.stats.inception}</span></div>
+                <div class="modal-stat"><span class="stat-label">Rebalancing</span><span class="stat-value">${fund.stats.rebalance}</span></div>
+            </div>` : ''}
+            <p style="font-size:0.78rem;color:#999;margin-top:8px;">Trailing returns as of 2/28/2026, net of 12 bps annual administrative fee. Source: Yahoo Finance / Morningstar. Past performance is not a guarantee of future results. Returns greater than one year are annualized.</p>
+        </div>` : '';
+
+    const html = `
+        <span class="modal-type">${fund.type}</span>
+        <h3>${fund.name}</h3>
+        <div class="modal-stats-grid">
+            <div class="modal-stat"><span class="stat-label">Risk Level</span><span class="stat-value">${fund.riskLevel}</span></div>
+            <div class="modal-stat"><span class="stat-label">Allocation</span><span class="stat-value">${fund.stockBond}</span></div>
+            <div class="modal-stat"><span class="stat-label">Expense Ratio</span><span class="stat-value">${fund.expenseRatio}</span></div>
+            <div class="modal-stat"><span class="stat-label">Best For</span><span class="stat-value" style="font-size:0.8rem">${fund.bestFor}</span></div>
+        </div>
+        <div class="modal-section">
+            <h4>Overview</h4>
+            <p>${fund.description}</p>
+        </div>
+        ${perfHtml}
+        <div class="modal-section">
+            <h4>Allocation Breakdown</h4>
+            <ul>${fund.allocation.map(a => `<li>${a}</li>`).join('')}</ul>
+        </div>
+        <div class="modal-section">
+            <h4>Advantages</h4>
+            <ul>${fund.pros.map(p => `<li>${p}</li>`).join('')}</ul>
+        </div>
+        <div class="modal-section">
+            <h4>Considerations</h4>
+            <ul>${fund.cons.map(c => `<li>${c}</li>`).join('')}</ul>
+        </div>
+        <p style="font-size:0.78rem;color:#999;margin-top:12px;">Trailing returns as of 2/28/2026. Non-model portfolio returns shown net of 12 bps annual administrative fee. Source: Yahoo Finance / Morningstar. Model portfolio data from City of Murrieta Q4 2025 Monitoring Report. Past performance is not a guarantee of future results. This tool is for educational purposes only and does not constitute investment advice.</p>
+    `;
+
+    document.getElementById('modal-body').innerHTML = html;
+    document.getElementById('modal-overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+    if (e.target === document.getElementById('modal-overlay')) {
+        closeModalDirect();
+    }
+}
+
+function closeModalDirect() {
+    document.getElementById('modal-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Compare functionality
+function toggleCompare(key, checked) {
+    if (checked) {
+        selectedCompare.add(key);
+    } else {
+        selectedCompare.delete(key);
+    }
+
+    const btn = document.getElementById('compare-btn');
+    if (selectedCompare.size >= 2) {
+        btn.disabled = false;
+        btn.textContent = `Compare ${selectedCompare.size} Selected Options`;
+    } else {
+        btn.disabled = true;
+        btn.textContent = 'Select 2 or more options above to compare';
+    }
+
+    // Hide comparison if selections changed
+    document.getElementById('comparison-section').classList.remove('active');
+}
+
+function compareSelected() {
+    if (selectedCompare.size < 2) return;
+
+    const funds = Array.from(selectedCompare).map(key =>
+        key === 'targetDateDynamic' ? fundData.targetDateDynamic : fundData[key]
+    );
+
+    const rows = [
+        { label: 'Type', get: f => f.type },
+        { label: 'Risk Level', get: f => f.riskLevel },
+        { label: 'Stock/Bond Split', get: f => f.stockBond },
+        { label: 'Expense Ratio', get: f => f.expenseRatio },
+        { label: '1-Year Return', get: f => f.performance ? f.performance.yr1 : 'N/A' },
+        { label: '5-Year Return', get: f => f.performance ? f.performance.yr5 : 'N/A' },
+        { label: '10-Year Return', get: f => f.performance ? (f.performance.yr10 !== 'N/A' ? f.performance.yr10 : (f.performance.sinceInception ? f.performance.sinceInception + '*' : 'N/A')) : 'N/A' },
+        { label: 'Best For', get: f => f.bestFor },
+        { label: 'Management Style', get: f => f.type === 'Model Portfolio' ? 'Plan-managed model (quarterly rebalancing)' : f.id === 'puritan' ? 'Active management (Fidelity)' : f.id === 'wellesley' ? 'Active management (Wellington)' : 'Index-based / Passive' },
+        { label: 'Rebalancing', get: f => f.type === 'Model Portfolio' ? 'Quarterly (automatic within the model)' : 'Automatic' },
+        { label: 'Advantages', get: f => f.pros.slice(0, 2).join('; ') },
+        { label: 'Considerations', get: f => f.cons.slice(0, 2).join('; ') }
+    ];
+
+    let tableHtml = '<table class="comparison-table"><thead><tr><th>Feature</th>';
+    funds.forEach(f => { tableHtml += `<th>${f.name}</th>`; });
+    tableHtml += '</tr></thead><tbody>';
+
+    rows.forEach(row => {
+        tableHtml += '<tr>';
+        tableHtml += `<td>${row.label}</td>`;
+        funds.forEach(f => { tableHtml += `<td>${row.get(f)}</td>`; });
+        tableHtml += '</tr>';
+    });
+
+    tableHtml += '</tbody></table>';
+
+    document.getElementById('comparison-table-container').innerHTML = tableHtml;
+    document.getElementById('comparison-section').classList.add('active');
+    document.getElementById('comparison-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Restart
+function restart() {
+    Object.keys(answers).forEach(k => delete answers[k]);
+    currentQuestion = 1;
+    selectedCompare.clear();
+
+    document.getElementById('results-section').classList.remove('active');
+    document.getElementById('comparison-section').classList.remove('active');
+    document.getElementById('progress-container').style.display = 'block';
+    document.getElementById('hero-section').querySelector('h2').textContent = 'Investment Allocation Tool';
+    document.getElementById('hero-section').querySelector('p').textContent = 'Answer a few questions to discover investment options that align with your retirement goals and risk tolerance.';
+
+    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
+    document.getElementById('q1').classList.add('active');
+
+    document.getElementById('age-input').value = '';
+    document.getElementById('retire-input').value = '';
+    document.querySelectorAll('.option-item').forEach(o => {
+        o.classList.remove('selected');
+        const radio = o.querySelector('input[type="radio"]');
+        if (radio) radio.checked = false;
+    });
+
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Keyboard support for age inputs
+document.getElementById('age-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') nextQuestion(1);
+    this.style.borderColor = '';
+});
+document.getElementById('retire-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') nextQuestion(2);
+    this.style.borderColor = '';
+});
+</script>
+</body>
+</html>
