@@ -1908,7 +1908,7 @@ function generatePDF() {
     addText('Your total score of ' + r.totalScore + ' was compared against the plan\'s scoring thresholds to arrive at the ' + r.riskProfile + ' profile. This reflects both how long you have until retirement and how you responded to the five risk questions.', { size: 9.5, after: 12 });
 
     // ── Recommended Funds ────────────────────────────────────────────────────
-    section('Your Recommended Funds');
+    section('Potential Fund Options to Consider');
     y += 4;
 
     r.recommendations.forEach((rec, i) => {
@@ -1988,7 +1988,7 @@ function sendResultsEmail() {
         'Q7 – Withdrawal Timeline: Score ' + r.q7 + '/4\n\n' +
         'Combined Score: ' + r.totalScore + ' → ' + r.riskProfile + ' Profile\n\n' +
         '════════════════════════════════\n' +
-        'YOUR RECOMMENDED FUNDS\n' +
+        'POTENTIAL FUND OPTIONS TO CONSIDER\n' +
         '════════════════════════════════\n\n' +
         fundsText + '\n\n' +
         '════════════════════════════════\n' +
