@@ -6,7 +6,7 @@
 const translations = {
 
     en: {
-        heroTitle: 'How Should I Invest?',
+        heroTitle: 'Investment Guidance Tool',
         heroSubtitle: 'Answer a few questions to discover investment options that align with your retirement goals and risk tolerance.',
         questionOf: (n, t) => `Question ${n} of ${t}`,
         yearsOld: 'years old', continue: 'Continue', back: 'Back',
@@ -59,7 +59,7 @@ const translations = {
     },
 
     es: {
-        heroTitle: '¿Cómo Debo Invertir?',
+        heroTitle: 'Herramienta de Orientación de Inversiones',
         heroSubtitle: 'Responda algunas preguntas para descubrir opciones de inversión que se alineen con sus metas de jubilación y tolerancia al riesgo.',
         questionOf: (n, t) => `Pregunta ${n} de ${t}`,
         yearsOld: 'años', continue: 'Continuar', back: 'Atrás',
@@ -112,7 +112,7 @@ const translations = {
     },
 
     zh: {
-        heroTitle: '我该如何投资？',
+        heroTitle: '投资指导工具',
         heroSubtitle: '回答几个问题，发现符合您退休目标和风险承受能力的投资选项。',
         questionOf: (n, t) => `第 ${n} 题，共 ${t} 题`,
         yearsOld: '岁', continue: '继续', back: '返回',
@@ -165,7 +165,7 @@ const translations = {
     },
 
     ja: {
-        heroTitle: 'どのように投資すべきか？',
+        heroTitle: '投資ガイダンスツール',
         heroSubtitle: 'いくつかの質問に答えて、退職目標とリスク許容度に合った投資オプションを見つけましょう。',
         questionOf: (n, t) => `質問 ${n} / ${t}`,
         yearsOld: '歳', continue: '次へ', back: '戻る',
@@ -218,7 +218,7 @@ const translations = {
     },
 
     tl: {
-        heroTitle: 'Paano Ako Dapat Mag-invest?',
+        heroTitle: 'Kasangkapan sa Gabay sa Pamumuhunan',
         heroSubtitle: 'Sagutin ang ilang tanong upang matuklasan ang mga opsyon sa pamumuhunan na naaayon sa iyong mga layunin sa pagreretiro at toleransya sa panganib.',
         questionOf: (n, t) => `Tanong ${n} ng ${t}`,
         yearsOld: 'taong gulang', continue: 'Magpatuloy', back: 'Bumalik',
@@ -271,7 +271,7 @@ const translations = {
     },
 
     pt: {
-        heroTitle: 'Como Devo Investir?',
+        heroTitle: 'Ferramenta de Orientação de Investimentos',
         heroSubtitle: 'Responda algumas perguntas para descobrir opções de investimento alinhadas com seus objetivos de aposentadoria e tolerância ao risco.',
         questionOf: (n, t) => `Pergunta ${n} de ${t}`,
         yearsOld: 'anos', continue: 'Continuar', back: 'Voltar',
@@ -324,7 +324,7 @@ const translations = {
     },
 
     fr: {
-        heroTitle: 'Comment Devrais-je Investir ?',
+        heroTitle: "Outil d'Orientation en Investissement",
         heroSubtitle: "Répondez à quelques questions pour découvrir des options d'investissement correspondant à vos objectifs de retraite et à votre tolérance au risque.",
         questionOf: (n, t) => `Question ${n} sur ${t}`,
         yearsOld: 'ans', continue: 'Continuer', back: 'Retour',
@@ -377,7 +377,7 @@ const translations = {
     },
 
     de: {
-        heroTitle: 'Wie Sollte Ich Investieren?',
+        heroTitle: 'Investitionsberatungs-Tool',
         heroSubtitle: 'Beantworten Sie einige Fragen, um Investitionsoptionen zu entdecken, die zu Ihren Rentenzielen und Ihrer Risikobereitschaft passen.',
         questionOf: (n, t) => `Frage ${n} von ${t}`,
         yearsOld: 'Jahre', continue: 'Weiter', back: 'Zurück',
@@ -430,7 +430,7 @@ const translations = {
     },
 
     ru: {
-        heroTitle: 'Как Мне Следует Инвестировать?',
+        heroTitle: 'Инструмент инвестиционного руководства',
         heroSubtitle: 'Ответьте на несколько вопросов, чтобы найти инвестиционные варианты, соответствующие вашим пенсионным целям и толерантности к риску.',
         questionOf: (n, t) => `Вопрос ${n} из ${t}`,
         yearsOld: 'лет', continue: 'Продолжить', back: 'Назад',
