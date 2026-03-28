@@ -80,6 +80,9 @@ const translations = {
         pdfDisclosures: 'Important Disclosures',
         pdfEmailSubject: 'Your Investment Guidance Results',
         pdfEmailDisclaimer: 'Disclaimer',
+        worstCase: 'Est. Worst Year (Historical)',
+        bestCase: 'Est. Best Year (Historical)',
+        histRangeNote: 'Based on ~90 years of U.S. market history. Single-year extremes are rare; long-term averages are more typical.',
     },
 
     es: {
@@ -157,6 +160,9 @@ const translations = {
         pdfDisclosures: 'Divulgaciones Importantes',
         pdfEmailSubject: 'Sus Resultados de Orientación de Inversión',
         pdfEmailDisclaimer: 'Descargo de Responsabilidad',
+        worstCase: 'Peor Año Est. (Histórico)',
+        bestCase: 'Mejor Año Est. (Histórico)',
+        histRangeNote: 'Basado en ~90 años de historial del mercado estadounidense. Los extremos de un solo año son raros; los promedios a largo plazo son más típicos.',
     },
 
     zh: {
@@ -234,6 +240,9 @@ const translations = {
         pdfDisclosures: '重要披露',
         pdfEmailSubject: '您的投资指导结果',
         pdfEmailDisclaimer: '免责声明',
+        worstCase: '预计最差年度（历史）',
+        bestCase: '预计最佳年度（历史）',
+        histRangeNote: '基于约90年的美国市场历史数据。单年极端情况较为罕见；长期平均水平更为典型。',
     },
 
     ja: {
@@ -311,6 +320,9 @@ const translations = {
         pdfDisclosures: '重要な開示事項',
         pdfEmailSubject: '投資ガイダンスの結果',
         pdfEmailDisclaimer: '免責事項',
+        worstCase: '最悪年（歴史的推定）',
+        bestCase: '最良年（歴史的推定）',
+        histRangeNote: '約90年の米国市場の歴史に基づきます。単年の極端な値は稀であり、長期平均の方が一般的です。',
     },
 
     tl: {
@@ -388,6 +400,9 @@ const translations = {
         pdfDisclosures: 'Mahahalagang Pagbubunyag',
         pdfEmailSubject: 'Ang Iyong mga Resulta ng Gabay sa Pamumuhunan',
         pdfEmailDisclaimer: 'Disclaimer',
+        worstCase: 'Tinantyang Pinakamasamang Taon (Kasaysayan)',
+        bestCase: 'Tinantyang Pinakamabuting Taon (Kasaysayan)',
+        histRangeNote: 'Batay sa ~90 taon ng kasaysayan ng merkado ng US. Bihira ang matinding pagbabago sa isang taon; mas karaniwan ang pangmatagalang average.',
     },
 
     pt: {
@@ -465,6 +480,9 @@ const translations = {
         pdfDisclosures: 'Divulgações Importantes',
         pdfEmailSubject: 'Seus Resultados de Orientação de Investimento',
         pdfEmailDisclaimer: 'Aviso Legal',
+        worstCase: 'Pior Ano Est. (Histórico)',
+        bestCase: 'Melhor Ano Est. (Histórico)',
+        histRangeNote: 'Baseado em ~90 anos de histórico do mercado americano. Extremos em um único ano são raros; médias de longo prazo são mais comuns.',
     },
 
     fr: {
@@ -542,6 +560,9 @@ const translations = {
         pdfDisclosures: 'Informations Importantes',
         pdfEmailSubject: "Vos Résultats d'Orientation en Investissement",
         pdfEmailDisclaimer: 'Avertissement',
+        worstCase: 'Pire Année Est. (Historique)',
+        bestCase: 'Meilleure Année Est. (Historique)',
+        histRangeNote: "Basé sur ~90 ans d'historique du marché américain. Les extrêmes annuels sont rares ; les moyennes à long terme sont plus représentatives.",
     },
 
     de: {
@@ -619,6 +640,9 @@ const translations = {
         pdfDisclosures: 'Wichtige Hinweise',
         pdfEmailSubject: 'Ihre Investitionsberatungs-Ergebnisse',
         pdfEmailDisclaimer: 'Haftungsausschluss',
+        worstCase: 'Geschätztes schlechtestes Jahr (historisch)',
+        bestCase: 'Geschätztes bestes Jahr (historisch)',
+        histRangeNote: 'Basierend auf ~90 Jahren US-Marktgeschichte. Einjährige Extremwerte sind selten; langfristige Durchschnittswerte sind typischer.',
     },
 
     ru: {
@@ -696,6 +720,9 @@ const translations = {
         pdfDisclosures: 'Важные раскрытия',
         pdfEmailSubject: 'Ваши результаты инвестиционного руководства',
         pdfEmailDisclaimer: 'Отказ от ответственности',
+        worstCase: 'Расч. худший год (исторический)',
+        bestCase: 'Расч. лучший год (исторический)',
+        histRangeNote: 'На основе ~90 лет истории рынка США. Однолетние экстремумы редки; долгосрочные средние значения более типичны.',
     },
 
 };
