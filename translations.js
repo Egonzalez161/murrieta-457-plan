@@ -252,7 +252,7 @@ const translations = {
         q5_1t: 'Pangalagaan ang aking ipon', q5_1d: 'Ang aking pangunahing priyoridad ay protektahan ang aking mayroon, kahit mababa ang kita.',
         q5_2t: 'Makakuha ng matatag na kita', q5_2d: 'Gusto ko ng maaasahan at pare-parehong kita na may limitadong panganib sa aking puhunan.',
         q5_3t: 'Pagbalansehin ang paglago at kita', q5_3d: 'Gusto ko ng pinagsamang paglago at kita na nagpapababa ng panganib sa paglipas ng panahon.',
-        q5_4t: 'I-maximize ang pangmatagalang paglago', q5_4d: 'Nakatuon ako sa pagpapalaki ng aking ipon nang hangga't maaari bago magretiro.',
+        q5_4t: 'I-maximize ang pangmatagalang paglago', q5_4d: "Nakatuon ako sa pagpapalaki ng aking ipon nang hangga't maaari bago magretiro.",
         q6: 'Paano mo irating ang iyong karanasan sa pamumuhunan?',
         q6_1t: 'Nagsisimula pa lamang', q6_1d: 'Kaunti o walang karanasan ako at mas gusto ko ang diskarte na hindi nangangailangan ng aktibong pamamahala.',
         q6_2t: 'May Kaunting Karanasan', q6_2d: 'Naiintindihan ko ang mga pangunahing kaalaman tulad ng stocks at bonds ngunit hindi pa ako aktibong namamahala ng pamumuhunan.',
