@@ -1223,6 +1223,13 @@ function t(key, ...args) {
     return typeof val === 'function' ? val(...args) : val;
 }
 
+// Returns a fund field in the current language, falling back to English.
+// client-config.js can define e.g. shortDesc_es, description_es, etc.
+function getField(fund, field) {
+    const localized = fund[field + '_' + currentLang];
+    return (localized !== undefined && localized !== null) ? localized : fund[field];
+}
+
 function setLanguage(lang) {
     currentLang = lang;
     document.documentElement.lang = lang;
@@ -1640,7 +1647,7 @@ function showResults() {
                     ${rec.isBestMatch ? `<span class="rec-badge">${t('bestMatch')}</span>` : ''}
                 </div>
                 <h4>${fund.name}</h4>
-                <p>${fund.shortDesc}</p>
+                <p>${getField(fund, 'shortDesc')}</p>
                 <div class="rec-card-stats">
                     <div class="stat">
                         <span class="stat-label">${t('allocation')}</span>
@@ -1709,24 +1716,24 @@ function openFundDetail(key) {
             <div class="modal-stat"><span class="stat-label">${t('riskLevel')}</span><span class="stat-value">${fund.riskLevel}</span></div>
             <div class="modal-stat"><span class="stat-label">${t('allocation')}</span><span class="stat-value">${fund.stockBond}</span></div>
             <div class="modal-stat"><span class="stat-label">${t('expenseRatio')}</span><span class="stat-value">${fund.expenseRatio}</span></div>
-            <div class="modal-stat"><span class="stat-label">${t('bestFor')}</span><span class="stat-value" style="font-size:0.8rem">${fund.bestFor}</span></div>
+            <div class="modal-stat"><span class="stat-label">${t('bestFor')}</span><span class="stat-value" style="font-size:0.8rem">${getField(fund, 'bestFor')}</span></div>
         </div>
         <div class="modal-section">
             <h4>${t('overview')}</h4>
-            <p>${fund.description}</p>
+            <p>${getField(fund, 'description')}</p>
         </div>
         ${perfHtml}
         <div class="modal-section">
             <h4>${t('holdings')}</h4>
-            <ul>${fund.allocation.map(a => `<li>${a}</li>`).join('')}</ul>
+            <ul>${(getField(fund, 'allocation') || []).map(a => `<li>${a}</li>`).join('')}</ul>
         </div>
         <div class="modal-section">
             <h4>${t('pros')}</h4>
-            <ul>${fund.pros.map(p => `<li>${p}</li>`).join('')}</ul>
+            <ul>${(getField(fund, 'pros') || []).map(p => `<li>${p}</li>`).join('')}</ul>
         </div>
         <div class="modal-section">
             <h4>${t('cons')}</h4>
-            <ul>${fund.cons.map(c => `<li>${c}</li>`).join('')}</ul>
+            <ul>${(getField(fund, 'cons') || []).map(c => `<li>${c}</li>`).join('')}</ul>
         </div>
         <p style="font-size:0.78rem;color:#999;margin-top:12px;">${t('modalDisclaimer')}</p>
     `;
