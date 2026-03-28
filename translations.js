@@ -63,6 +63,7 @@ const translations = {
         rebalanceAuto: 'Automatic', feature: 'Feature',
         perfDisclaimer: 'Trailing returns as of 2/28/2026, net of 12 bps annual administrative fee. Source: Yahoo Finance / Morningstar. Past performance is not a guarantee of future results. Returns greater than one year are annualized.',
         modalDisclaimer: 'Trailing returns as of 2/28/2026. Non-model portfolio returns shown net of 12 bps annual administrative fee. Source: Yahoo Finance / Morningstar. Model portfolio data from City of Murrieta Q4 2025 Monitoring Report. Past performance is not a guarantee of future results. This tool provides general guidance only; it does not constitute investment advice or create an advisor-client relationship. Results are based solely on limited questionnaire responses and do not reflect your complete financial situation. Consult a qualified financial professional before making any investment decisions.',
+        targetDateNote: 'This fund recommendation is based on the retirement age you selected. If your retirement plans change, a different target date fund may be more appropriate.',
     },
 
     es: {
@@ -123,6 +124,7 @@ const translations = {
         rebalanceAuto: 'Automático', feature: 'Característica',
         perfDisclaimer: 'Rendimientos acumulados al 28/02/2026, netos de comisión administrativa anual de 12 pb. Fuente: Yahoo Finance / Morningstar. El rendimiento pasado no garantiza resultados futuros. Los rendimientos superiores a un año son anualizados.',
         modalDisclaimer: 'Rendimientos acumulados al 28/02/2026. Los rendimientos de carteras no modelo se muestran netos de comisión administrativa anual de 12 pb. Fuente: Yahoo Finance / Morningstar. Datos de carteras modelo del Informe de Seguimiento Q4 2025 de la Ciudad de Murrieta. El rendimiento pasado no garantiza resultados futuros. Esta herramienta ofrece orientación general únicamente; no constituye asesoramiento de inversión ni crea una relación de asesor-cliente. Los resultados se basan únicamente en respuestas limitadas al cuestionario y no reflejan su situación financiera completa. Consulte a un profesional financiero calificado antes de tomar decisiones de inversión.',
+        targetDateNote: 'Esta recomendación de fondo se basa en la edad de jubilación que seleccionó. Si sus planes de jubilación cambian, otro fondo de fecha objetivo puede ser más apropiado.',
     },
 
     zh: {
@@ -176,6 +178,14 @@ const translations = {
         rebalanceAuto: '自动', feature: '特征',
         perfDisclaimer: '截至2026年2月28日的追踪回报，扣除每年12个基点的行政费用。来源：雅虎财经/晨星。过去业绩不代表未来结果。超过一年的回报为年化回报。',
         modalDisclaimer: '截至2026年2月28日的追踪回报。非模型组合回报扣除每年12个基点的行政费用。来源：雅虎财经/晨星。模型组合数据来自穆里埃塔市2025年第四季度监控报告。过去业绩不代表未来结果。本工具仅提供一般性指导；不构成投资建议，也不创立顾问与客户关系。结果仅基于有限的问卷答案，不反映您的完整财务状况。在做出任何投资决策之前，请咨询合格的金融专业人士。',
+        targetDateNote: '此基金推荐基于您选择的退休年龄。如果您的退休计划发生变化，不同的目标日期基金可能更为合适。',
+        pdfSectionTitle: '保存或分享您的结果',
+        pdfSectionSubtitle: '下载个性化PDF，解释您的风险档案和建议，或发送摘要至您的电子邮件。',
+        pdfDownload: '⬇ 下载PDF报告',
+        pdfSendEmail: '✉ 发送至我的邮箱',
+        pdfEmailPlaceholder: '您的@邮箱.com',
+        pdfEmailSent: '邮件客户端已打开 — 请撰写并发送给自己！',
+        pdfEmailInvalid: '请输入有效的电子邮件地址。',
     },
 
     ja: {
@@ -229,6 +239,14 @@ const translations = {
         rebalanceAuto: '自動', feature: '特徴',
         perfDisclaimer: '2026年2月28日時点の累積リターン（年間12bpの管理費用控除後）。出典：Yahoo Finance / Morningstar。過去の実績は将来の結果を保証するものではありません。1年超のリターンは年率換算です。',
         modalDisclaimer: '2026年2月28日時点の累積リターン。非モデルポートフォリオのリターンは年間12bpの管理費用を控除後。出典：Yahoo Finance / Morningstar。モデルポートフォリオデータはCity of Murrieta 2025年第4四半期モニタリングレポートより。過去の実績は将来の結果を保証するものではありません。このツールは一般的なガイダンスのみを提供するものであり、投資アドバイスを構成したり、アドバイザーとクライアントの関係を生じさせるものではありません。結果は限られた質問への回答のみに基づいており、お客様の財務状況全体を反映したものではありません。投資判断を行う前に、資格を持つ金融の専門家にご相談ください。',
+        targetDateNote: 'このファンドの推薦は、あなたが選択した退職年齢に基づいています。退職計画が変わった場合、別の目標日付ファンドがより適切かもしれません。',
+        pdfSectionTitle: '結果を保存または共有する',
+        pdfSectionSubtitle: 'リスクプロファイルと推薦内容を説明した個別PDFをダウンロードするか、概要をメールで送信してください。',
+        pdfDownload: '⬇ PDFレポートをダウンロード',
+        pdfSendEmail: '✉ メールで送る',
+        pdfEmailPlaceholder: 'メールアドレスを入力',
+        pdfEmailSent: 'メールクライアントが開きました — 自分宛てに送信してください！',
+        pdfEmailInvalid: '有効なメールアドレスを入力してください。',
     },
 
     tl: {
@@ -282,6 +300,14 @@ const translations = {
         rebalanceAuto: 'Awtomatiko', feature: 'Tampok',
         perfDisclaimer: 'Trailing returns noong 2/28/2026, net ng 12 bps taunang administrative fee. Pinagkukunan: Yahoo Finance / Morningstar. Ang nakaraang performance ay hindi garantiya ng mga resulta sa hinaharap. Ang mga return na higit sa isang taon ay annualized.',
         modalDisclaimer: 'Trailing returns noong 2/28/2026. Ang mga non-model portfolio return ay ipinapakita net ng 12 bps taunang administrative fee. Pinagkukunan: Yahoo Finance / Morningstar. Ang data ng model portfolio ay mula sa City of Murrieta Q4 2025 Monitoring Report. Ang nakaraang performance ay hindi garantiya ng mga resulta sa hinaharap. Ang tool na ito ay nagbibigay lamang ng pangkalahatang gabay; hindi ito bumubuo ng investment advice o lumilikha ng relasyon ng advisor-kliyente. Ang mga resulta ay batay lamang sa limitadong mga sagot sa palatanungan at hindi sumasalamin sa iyong kumpletong sitwasyong pinansyal. Kumonsulta sa isang kwalipikadong propesyonal sa pananalapi bago gumawa ng anumang desisyon sa pamumuhunan.',
+        targetDateNote: 'Ang rekomendasyon ng pondong ito ay batay sa edad ng pagreretiro na iyong pinili. Kung magbabago ang iyong mga plano sa pagreretiro, maaaring mas angkop ang ibang target date fund.',
+        pdfSectionTitle: 'I-save o Ibahagi ang Iyong mga Resulta',
+        pdfSectionSubtitle: 'I-download ang personalisadong PDF na nagpapaliwanag ng iyong risk profile at mga rekomendasyon, o magpadala ng buod sa iyong email.',
+        pdfDownload: '⬇ I-download ang PDF na Ulat',
+        pdfSendEmail: '✉ Ipadala sa Aking Email',
+        pdfEmailPlaceholder: 'iyong@email.com',
+        pdfEmailSent: 'Nabuksan ang email client — i-compose at ipadala sa iyong sarili!',
+        pdfEmailInvalid: 'Mangyaring maglagay ng wastong email address.',
     },
 
     pt: {
@@ -335,6 +361,14 @@ const translations = {
         rebalanceAuto: 'Automático', feature: 'Característica',
         perfDisclaimer: 'Retornos acumulados em 28/02/2026, líquidos de taxa administrativa anual de 12 bps. Fonte: Yahoo Finance / Morningstar. O desempenho passado não garante resultados futuros. Retornos superiores a um ano são anualizados.',
         modalDisclaimer: 'Retornos acumulados em 28/02/2026. Retornos de portfólios não-modelo apresentados líquidos de taxa administrativa anual de 12 bps. Fonte: Yahoo Finance / Morningstar. Dados de portfólio modelo do Relatório de Monitoramento Q4 2025 da Cidade de Murrieta. O desempenho passado não garante resultados futuros. Esta ferramenta fornece apenas orientação geral; não constitui aconselhamento de investimento nem cria uma relação consultor-cliente. Os resultados são baseados apenas em respostas limitadas ao questionário e não refletem sua situação financeira completa. Consulte um profissional financeiro qualificado antes de tomar qualquer decisão de investimento.',
+        targetDateNote: 'Esta recomendação de fundo é baseada na idade de aposentadoria que você selecionou. Se seus planos de aposentadoria mudarem, um fundo de data-alvo diferente pode ser mais adequado.',
+        pdfSectionTitle: 'Salvar ou Compartilhar Seus Resultados',
+        pdfSectionSubtitle: 'Baixe um PDF personalizado explicando seu perfil de risco e recomendações, ou envie um resumo para seu e-mail.',
+        pdfDownload: '⬇ Baixar Relatório PDF',
+        pdfSendEmail: '✉ Enviar para Meu E-mail',
+        pdfEmailPlaceholder: 'seu@email.com',
+        pdfEmailSent: 'Cliente de e-mail aberto — redija e envie para você mesmo!',
+        pdfEmailInvalid: 'Por favor, insira um endereço de e-mail válido.',
     },
 
     fr: {
@@ -388,6 +422,14 @@ const translations = {
         rebalanceAuto: 'Automatique', feature: 'Caractéristique',
         perfDisclaimer: 'Rendements cumulés au 28/02/2026, nets de frais administratifs annuels de 12 pb. Source : Yahoo Finance / Morningstar. Les performances passées ne garantissent pas les résultats futurs. Les rendements supérieurs à un an sont annualisés.',
         modalDisclaimer: 'Rendements cumulés au 28/02/2026. Les rendements des portefeuilles hors modèle sont nets de frais administratifs annuels de 12 pb. Source : Yahoo Finance / Morningstar. Données du portefeuille modèle issues du rapport de suivi Q4 2025 de la Ville de Murrieta. Les performances passées ne garantissent pas les résultats futurs. Cet outil fournit uniquement des orientations générales ; il ne constitue pas un conseil en investissement et ne crée pas de relation conseiller-client. Les résultats sont basés uniquement sur des réponses limitées au questionnaire et ne reflètent pas votre situation financière complète. Consultez un professionnel financier qualifié avant de prendre toute décision d\'investissement.',
+        targetDateNote: "Cette recommandation de fonds est basée sur l'âge de retraite que vous avez sélectionné. Si vos plans de retraite changent, un autre fonds à date cible pourrait être plus approprié.",
+        pdfSectionTitle: 'Sauvegarder ou Partager Vos Résultats',
+        pdfSectionSubtitle: "Téléchargez un PDF personnalisé expliquant votre profil de risque et vos recommandations, ou envoyez un résumé à votre e-mail.",
+        pdfDownload: '⬇ Télécharger le Rapport PDF',
+        pdfSendEmail: '✉ Envoyer à Mon E-mail',
+        pdfEmailPlaceholder: 'votre@email.com',
+        pdfEmailSent: 'Client de messagerie ouvert — rédigez et envoyez-vous le résumé !',
+        pdfEmailInvalid: 'Veuillez saisir une adresse e-mail valide.',
     },
 
     de: {
@@ -441,6 +483,14 @@ const translations = {
         rebalanceAuto: 'Automatisch', feature: 'Merkmal',
         perfDisclaimer: 'Kumulierte Renditen per 28.02.2026, nach Abzug der jährlichen Verwaltungsgebühr von 12 Bp. Quelle: Yahoo Finance / Morningstar. Vergangene Performance ist keine Garantie für zukünftige Ergebnisse. Renditen über einem Jahr sind annualisiert.',
         modalDisclaimer: 'Kumulierte Renditen per 28.02.2026. Renditen von Nicht-Modell-Portfolios nach Abzug der jährlichen Verwaltungsgebühr von 12 Bp. Quelle: Yahoo Finance / Morningstar. Modellportfolio-Daten aus dem Q4 2025 Monitoring-Bericht der Stadt Murrieta. Vergangene Performance ist keine Garantie für zukünftige Ergebnisse. Dieses Tool bietet nur allgemeine Orientierung; es stellt keine Anlageberatung dar und begründet kein Berater-Kunden-Verhältnis. Ergebnisse basieren ausschließlich auf begrenzten Fragebogenantworten und spiegeln nicht Ihre vollständige finanzielle Situation wider. Konsultieren Sie einen qualifizierten Finanzfachmann, bevor Sie Anlageentscheidungen treffen.',
+        targetDateNote: 'Diese Fondsempfehlung basiert auf dem von Ihnen gewählten Rentenalter. Wenn sich Ihre Rentenpläne ändern, könnte ein anderer Zielfonds geeigneter sein.',
+        pdfSectionTitle: 'Ergebnisse Speichern oder Teilen',
+        pdfSectionSubtitle: 'Laden Sie ein personalisiertes PDF herunter, das Ihr Risikoprofil und Empfehlungen erklärt, oder senden Sie eine Zusammenfassung an Ihre E-Mail.',
+        pdfDownload: '⬇ PDF-Bericht Herunterladen',
+        pdfSendEmail: '✉ An Meine E-Mail Senden',
+        pdfEmailPlaceholder: 'ihre@email.de',
+        pdfEmailSent: 'E-Mail-Client geöffnet — verfassen Sie die E-Mail und senden Sie sie an sich selbst!',
+        pdfEmailInvalid: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
     },
 
     ru: {
@@ -494,6 +544,14 @@ const translations = {
         rebalanceAuto: 'Автоматически', feature: 'Характеристика',
         perfDisclaimer: 'Накопленные доходы по состоянию на 28.02.2026, за вычетом ежегодной административной комиссии 12 б.п. Источник: Yahoo Finance / Morningstar. Прошлые результаты не гарантируют будущих. Доходности свыше одного года являются годовыми.',
         modalDisclaimer: 'Накопленные доходы по состоянию на 28.02.2026. Доходности немодельных портфелей указаны за вычетом ежегодной административной комиссии 12 б.п. Источник: Yahoo Finance / Morningstar. Данные модельного портфеля из отчёта о мониторинге Q4 2025 города Мурриета. Прошлые результаты не гарантируют будущих. Данный инструмент предоставляет только общие рекомендации; он не является инвестиционным советом и не создаёт отношений советник-клиент. Результаты основаны исключительно на ограниченных ответах анкеты и не отражают вашу полную финансовую ситуацию. Проконсультируйтесь с квалифицированным финансовым специалистом перед принятием любых инвестиционных решений.',
+        targetDateNote: 'Эта рекомендация фонда основана на выбранном вами возрасте выхода на пенсию. Если ваши пенсионные планы изменятся, другой фонд с целевой датой может быть более подходящим.',
+        pdfSectionTitle: 'Сохранить или Поделиться Результатами',
+        pdfSectionSubtitle: 'Скачайте персонализированный PDF с объяснением вашего риск-профиля и рекомендаций или отправьте сводку на e-mail.',
+        pdfDownload: '⬇ Скачать PDF-отчёт',
+        pdfSendEmail: '✉ Отправить на Мой E-mail',
+        pdfEmailPlaceholder: 'ваш@email.ru',
+        pdfEmailSent: 'Почтовый клиент открыт — составьте и отправьте письмо себе!',
+        pdfEmailInvalid: 'Пожалуйста, введите действительный адрес e-mail.',
     },
 
 };

@@ -1312,6 +1312,13 @@ function setLanguage(lang) {
     currentLang = lang;
     document.documentElement.lang = lang;
     applyTranslations();
+    // Re-render dynamic results content when the results page is visible
+    if (lastResults && document.getElementById('results-section').classList.contains('active')) {
+        renderResultCards();
+        document.getElementById('results-description').textContent = t('profileDesc', lastResults.riskProfile, lastResults.yearsToRetire);
+        document.getElementById('hero-section').querySelector('h2').textContent = t('yourRecommendations');
+        document.getElementById('hero-section').querySelector('p').textContent = `${t('profileLabel')}: ${lastResults.riskProfile} | ${lastResults.yearsToRetire} ${t('yearsToRetirement')}`;
+    }
 }
 
 function applyTranslations() {
@@ -1711,15 +1718,48 @@ function showResults() {
     document.getElementById('risk-badge').textContent = riskProfile;
     document.getElementById('results-description').textContent = profileDesc;
 
-    // Build recommendation cards (model fund omitted if client has none)
+    // Build recommendation list — 3 equal recommendations, no Best Match label
     const recommendations = [
-        ...(modelFund ? [{ key: modelFund, isBestMatch: true }] : []),
-        { key: 'targetDateDynamic', isBestMatch: !modelFund },
-        { key: allocationFund, isBestMatch: false }
+        ...(modelFund ? [{ key: modelFund }] : []),
+        { key: 'targetDateDynamic' },
+        { key: allocationFund }
     ];
 
-    const cardsHtml = recommendations.map((rec, idx) => {
-        const fund = rec.key === 'targetDateDynamic' ? fundData.targetDateDynamic : fundData[rec.key];
+    // Store results for PDF/email generation and language re-rendering
+    lastResults = {
+        age: answers.age,
+        retireAge: answers.retireAge,
+        yearsToRetire,
+        timeScore,
+        riskScore,
+        totalScore,
+        riskProfile,
+        q3: answers.q3, q4: answers.q4, q5: answers.q5, q6: answers.q6, q7: answers.q7,
+        recommendations: recommendations.map(rec => {
+            const f = rec.key === 'targetDateDynamic' ? fundData.targetDateDynamic : fundData[rec.key];
+            return { key: rec.key, fund: f };
+        })
+    };
+
+    renderResultCards();
+
+    // Show results, hide questionnaire
+    document.getElementById('q' + currentQuestion).classList.remove('active');
+    document.getElementById('progress-container').style.display = 'none';
+    document.getElementById('results-section').classList.add('active');
+    document.getElementById('hero-section').querySelector('h2').textContent = t('yourRecommendations');
+    document.getElementById('hero-section').querySelector('p').textContent = `${t('profileLabel')}: ${riskProfile} | ${yearsToRetire} ${t('yearsToRetirement')}`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    selectedCompare.clear();
+    document.getElementById('comparison-section').classList.remove('active');
+}
+
+// ── Re-render result cards (called on initial show and on language change) ─────
+function renderResultCards() {
+    if (!lastResults) return;
+    const cardsHtml = lastResults.recommendations.map((rec, idx) => {
+        const fund = rec.fund;
         return `
             <div class="rec-card" id="rec-${idx}" onclick="openFundDetail('${rec.key}')">
                 <label class="compare-check" onclick="event.stopPropagation()">
@@ -1727,7 +1767,6 @@ function showResults() {
                 </label>
                 <div class="rec-card-header">
                     <span class="rec-card-type">${fund.type}</span>
-                    ${rec.isBestMatch ? `<span class="rec-badge">${t('bestMatch')}</span>` : ''}
                 </div>
                 <h4>${fund.name}</h4>
                 <p>${getField(fund, 'shortDesc')}</p>
@@ -1750,39 +1789,11 @@ function showResults() {
                     </div>` : ''}
                 </div>
                 ${(() => { const h = getHistoricalContext(fund.stockBond); return '<div class="hist-context"><strong>' + t('expectedReturn') + ': ' + h.avg + '</strong>' + h.note + '</div>'; })()}
-                ${rec.key === 'targetDateDynamic' ? '<p style="font-size:0.75rem;color:#999;margin-top:10px;line-height:1.4;"><em>This fund recommendation is based on the retirement age you selected. If your retirement plans change, a different target date fund may be more appropriate.</em></p>' : ''}
+                ${rec.key === 'targetDateDynamic' ? '<p style="font-size:0.75rem;color:#999;margin-top:10px;line-height:1.4;"><em>' + t('targetDateNote') + '</em></p>' : ''}
             </div>
         `;
     }).join('');
-
     document.getElementById('rec-cards').innerHTML = cardsHtml;
-
-    // Store results for PDF/email generation
-    lastResults = {
-        age: answers.age,
-        retireAge: answers.retireAge,
-        yearsToRetire,
-        timeScore,
-        riskScore,
-        totalScore,
-        riskProfile,
-        q3: answers.q3, q4: answers.q4, q5: answers.q5, q6: answers.q6, q7: answers.q7,
-        recommendations: recommendations.map(rec => {
-            const f = rec.key === 'targetDateDynamic' ? fundData.targetDateDynamic : fundData[rec.key];
-            return { key: rec.key, isBestMatch: rec.isBestMatch, fund: f };
-        })
-    };
-
-    // Show results, hide questionnaire
-    document.getElementById('q' + currentQuestion).classList.remove('active');
-    document.getElementById('progress-container').style.display = 'none';
-    document.getElementById('results-section').classList.add('active');
-    document.getElementById('hero-section').querySelector('h2').textContent = t('yourRecommendations');
-    document.getElementById('hero-section').querySelector('p').textContent = `${t('profileLabel')}: ${riskProfile} | ${yearsToRetire} ${t('yearsToRetirement')}`;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    selectedCompare.clear();
-    document.getElementById('comparison-section').classList.remove('active');
 }
 
 // ── PDF Generation ────────────────────────────────────────────────────────────
@@ -1904,8 +1915,7 @@ function generatePDF() {
         const f = rec.fund;
         const hist = getHistoricalContext(f.stockBond);
         if (y + 80 > ph - margin) { doc.addPage(); y = margin; }
-        const tag = rec.isBestMatch ? ' ★ Best Match' : '';
-        addText((i + 1) + '.  ' + f.name + tag, { size: 10.5, style: 'bold', color: rec.isBestMatch ? [26, 58, 92] : [40, 40, 40], after: 3 });
+        addText((i + 1) + '.  ' + f.name, { size: 10.5, style: 'bold', color: [26, 58, 92], after: 3 });
         addText(f.type + '  ·  ' + f.stockBond + '  ·  Expense Ratio: ' + f.expenseRatio, { size: 9, color: [100, 100, 100], after: 3 });
         if (f.performance) addText('1-Year: ' + f.performance.yr1 + '  ·  3-Year: ' + f.performance.yr3 + '  ·  5-Year: ' + f.performance.yr5 + '  ·  Expected Return Range: ' + hist.avg, { size: 9, color: [100, 100, 100], after: 3 });
         addText(getField(f, 'shortDesc'), { size: 9.5, after: 10 });
@@ -1947,7 +1957,7 @@ function sendResultsEmail() {
     const fundsText = r.recommendations.map((rec, i) => {
         const f = rec.fund;
         const hist = getHistoricalContext(f.stockBond);
-        return (i + 1) + '. ' + f.name + (rec.isBestMatch ? ' ★ Best Match' : '') + '\n' +
+        return (i + 1) + '. ' + f.name + '\n' +
             '   Allocation: ' + f.stockBond + ' | Expense Ratio: ' + f.expenseRatio + '\n' +
             (f.performance ? '   1-Year: ' + f.performance.yr1 + ' | 3-Year: ' + f.performance.yr3 + ' | Expected Return: ' + hist.avg + '\n' : '') +
             '   ' + getField(f, 'shortDesc');
