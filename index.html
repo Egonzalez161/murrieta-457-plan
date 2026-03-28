@@ -1840,16 +1840,16 @@ function generatePDF() {
 
     const r = lastResults;
     const planName = clientConfig.planName || 'Retirement Plan';
-    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const today = new Date().toLocaleDateString(currentLang, { year: 'numeric', month: 'long', day: 'numeric' });
 
     // ── Header ────────────────────────────────────────────────────────────────
     doc.setFillColor(26, 58, 92);
     doc.rect(0, 0, pw, 70, 'F');
     doc.setFontSize(18); doc.setFont('helvetica', 'bold');
     doc.setTextColor(255, 255, 255);
-    doc.text('Investment Guidance Tool', margin, 32);
+    doc.text(t('heroTitle'), margin, 32);
     doc.setFontSize(10); doc.setFont('helvetica', 'normal');
-    doc.text(planName + ' · Generated ' + today, margin, 50);
+    doc.text(planName + ' · ' + t('pdfGenerated') + ' ' + today, margin, 50);
     y = 90;
 
     // ── Risk Profile Banner ───────────────────────────────────────────────────
@@ -1857,58 +1857,50 @@ function generatePDF() {
     doc.roundedRect(margin, y, cw, 40, 4, 4, 'F');
     doc.setFontSize(13); doc.setFont('helvetica', 'bold');
     doc.setTextColor(26, 58, 92);
-    doc.text('Your Risk Profile: ' + r.riskProfile, pw / 2, y + 15, { align: 'center' });
+    doc.text(t('pdfYourRiskProfile') + ': ' + r.riskProfile, pw / 2, y + 15, { align: 'center' });
     doc.setFontSize(9); doc.setFont('helvetica', 'normal');
-    doc.text('Age ' + r.age + '  ·  Retiring at ' + r.retireAge + '  ·  ' + r.yearsToRetire + ' years to retirement', pw / 2, y + 29, { align: 'center' });
+    doc.text(t('pdfAgeLabel') + ' ' + r.age + '  ·  ' + t('pdfRetiringAt') + ' ' + r.retireAge + '  ·  ' + r.yearsToRetire + ' ' + t('yearsToRetirement'), pw / 2, y + 29, { align: 'center' });
     y += 52;
 
     // ── How Your Profile Was Calculated ──────────────────────────────────────
-    section('How Your Profile Was Calculated');
+    section(t('pdfHowCalculated'));
     y += 4;
 
     // Time horizon
-    const timeLabels = [
-        '25+ years → maximum time score',
-        '20–24 years → score of 4',
-        '15–19 years → score of 3',
-        '10–14 years → score of 2',
-        '5–9 years → score of 1',
-        'Under 5 years → score of 0'
+    const tlabels = t('pdfTimeLabels');
+    const timeReason = r.yearsToRetire >= 25 ? tlabels[0] : r.yearsToRetire >= 20 ? tlabels[1] :
+        r.yearsToRetire >= 15 ? tlabels[2] : r.yearsToRetire >= 10 ? tlabels[3] :
+        r.yearsToRetire >= 5 ? tlabels[4] : tlabels[5];
+
+    addText(t('pdfTimeHorizonScore').toUpperCase() + ': ' + r.timeScore + ' / 5', { size: 10, style: 'bold', after: 2 });
+    addText(t('pdfTimeHorizonText', r.yearsToRetire, timeReason, r.timeScore), { size: 9.5, after: 10 });
+
+    // Q3–Q7 answers — labels and descriptions from current language
+    const qDefs = [
+        { key: 'q3', label: t('pdfQ3Label'), max: 5, hasDesc: true },
+        { key: 'q4', label: t('pdfQ4Label'), max: 4, hasDesc: true },
+        { key: 'q5', label: t('pdfQ5Label'), max: 4, hasDesc: true },
+        { key: 'q6', label: t('pdfQ6Label'), max: 4, hasDesc: true },
+        { key: 'q7', label: t('pdfQ7Label'), max: 4, hasDesc: false },
     ];
-    const timeReason = r.yearsToRetire >= 25 ? timeLabels[0] : r.yearsToRetire >= 20 ? timeLabels[1] :
-        r.yearsToRetire >= 15 ? timeLabels[2] : r.yearsToRetire >= 10 ? timeLabels[3] :
-        r.yearsToRetire >= 5 ? timeLabels[4] : timeLabels[5];
 
-    addText('TIME HORIZON SCORE: ' + r.timeScore + ' / 5', { size: 10, style: 'bold', after: 2 });
-    addText('With ' + r.yearsToRetire + ' years until retirement (' + timeReason + '), your time horizon score is ' + r.timeScore + '. A longer runway allows more time to recover from market downturns, which supports a higher allocation to growth assets.', { size: 9.5, after: 10 });
+    addText(t('pdfRiskToleranceScore').toUpperCase() + ': ' + r.riskScore + ' / 20', { size: 10, style: 'bold', after: 4 });
 
-    // Q3–Q7 answers
-    const qLabels = {
-        q3: { q: 'Risk Comfort (Q3)', max: 5, labels: [, 'Very Conservative', 'Somewhat Conservative', 'Moderate', 'Somewhat Aggressive', 'Aggressive'], impact: [, 'indicates a strong preference for stability over growth', 'indicates preference for mostly stable investments', 'indicates a balanced approach to risk and growth', 'indicates comfort with volatility for higher returns', 'indicates a strong preference for maximum growth'] },
-        q4: { q: 'Market Reaction (Q4)', max: 4, labels: [, 'Move everything to safer investments', 'Move some to safer investments', 'Hold steady and wait for recovery', 'Invest more at lower prices'], impact: [, 'suggests a very low risk tolerance — you prioritize protecting your account', 'suggests a cautious approach to market declines', 'suggests emotional resilience and a long-term mindset', 'suggests a high risk tolerance and opportunistic mindset'] },
-        q5: { q: 'Investment Goal (Q5)', max: 4, labels: [, 'Preserve my savings', 'Generate steady income', 'Balance growth and income', 'Maximize long-term growth'], impact: [, 'prioritizing capital preservation above all else', 'prioritizing reliable income with limited risk', 'seeking a balanced approach to growth and stability', 'prioritizing long-term wealth accumulation'] },
-        q6: { q: 'Investment Experience (Q6)', max: 4, labels: [, 'Beginner', 'Some Experience', 'Experienced', 'Very Experienced'], impact: [, 'suggesting a hands-off approach may suit you best', 'suggesting familiarity with basic investment concepts', 'suggesting comfort managing across multiple asset types', 'suggesting strong familiarity with market dynamics'] },
-        q7: { q: 'Withdrawal Timeline (Q7)', max: 4, labels: [, 'Within 1–2 years', 'In 3–5 years', 'In 6–10 years', 'In more than 10 years'], impact: [, 'indicating an immediate need for liquidity — very conservative positioning is appropriate', 'indicating a near-term need — capital preservation is a priority', 'indicating a medium-term horizon — moderate positioning is appropriate', 'indicating a long-term horizon — growth-oriented positioning is appropriate'] }
-    };
-
-    addText('RISK TOLERANCE SCORE: ' + r.riskScore + ' / 20', { size: 10, style: 'bold', after: 4 });
-
-    ['q3','q4','q5','q6','q7'].forEach(qk => {
-        const info = qLabels[qk];
-        const val = r[qk] || 1;
-        const label = info.labels[val];
-        const impact = info.impact[val];
+    qDefs.forEach(({ key, label, max, hasDesc }) => {
+        const val = r[key] || 1;
+        const titleKey = hasDesc ? (key + '_' + val + 't') : (key + '_' + val);
         if (y + 36 > ph - margin) { doc.addPage(); y = margin; }
-        addText(info.q + ':  "' + label + '"  (Score: ' + val + '/' + info.max + ')', { size: 9.5, style: 'bold', after: 2 });
-        addText('This response ' + impact + '.', { size: 9, color: [80, 80, 80], after: 8 });
+        addText(label + ':  "' + t(titleKey) + '"  (' + t('pdfScore') + ': ' + val + '/' + max + ')', { size: 9.5, style: 'bold', after: 2 });
+        if (hasDesc) addText(t(key + '_' + val + 'd'), { size: 9, color: [80, 80, 80], after: 8 });
+        else y += 4;
     });
 
     rule();
-    addText('COMBINED SCORE: ' + r.totalScore + '  →  Profile: ' + r.riskProfile + '  (Time ' + r.timeScore + ' + Risk ' + r.riskScore + ')', { size: 10, style: 'bold', after: 6 });
-    addText('Your total score of ' + r.totalScore + ' was compared against the plan\'s scoring thresholds to arrive at the ' + r.riskProfile + ' profile. This reflects both how long you have until retirement and how you responded to the five risk questions.', { size: 9.5, after: 12 });
+    addText(t('pdfCombinedScoreLabel').toUpperCase() + ': ' + r.totalScore + '  →  ' + t('profileLabel') + ': ' + r.riskProfile + '  (' + t('pdfTimeShort') + ' ' + r.timeScore + ' + ' + t('pdfRiskShort') + ' ' + r.riskScore + ')', { size: 10, style: 'bold', after: 6 });
+    addText(t('pdfCombinedScoreText', r.totalScore, r.riskProfile, r.timeScore, r.riskScore), { size: 9.5, after: 12 });
 
-    // ── Recommended Funds ────────────────────────────────────────────────────
-    section('Potential Fund Options to Consider');
+    // ── Fund Options ─────────────────────────────────────────────────────────
+    section(t('yourRecommendations'));
     y += 4;
 
     r.recommendations.forEach((rec, i) => {
@@ -1916,18 +1908,18 @@ function generatePDF() {
         const hist = getHistoricalContext(f.stockBond);
         if (y + 80 > ph - margin) { doc.addPage(); y = margin; }
         addText((i + 1) + '.  ' + f.name, { size: 10.5, style: 'bold', color: [26, 58, 92], after: 3 });
-        addText(f.type + '  ·  ' + f.stockBond + '  ·  Expense Ratio: ' + f.expenseRatio, { size: 9, color: [100, 100, 100], after: 3 });
-        if (f.performance) addText('1-Year: ' + f.performance.yr1 + '  ·  3-Year: ' + f.performance.yr3 + '  ·  5-Year: ' + f.performance.yr5 + '  ·  Expected Return Range: ' + hist.avg, { size: 9, color: [100, 100, 100], after: 3 });
+        addText(f.type + '  ·  ' + f.stockBond + '  ·  ' + t('expenseRatio') + ': ' + f.expenseRatio, { size: 9, color: [100, 100, 100], after: 3 });
+        if (f.performance) addText(t('yr1') + ': ' + f.performance.yr1 + '  ·  ' + t('yr3') + ': ' + f.performance.yr3 + '  ·  ' + t('yr5') + ': ' + f.performance.yr5 + '  ·  ' + t('expectedReturn') + ': ' + hist.avg, { size: 9, color: [100, 100, 100], after: 3 });
         addText(getField(f, 'shortDesc'), { size: 9.5, after: 10 });
         if (i < r.recommendations.length - 1) { doc.setDrawColor(220, 228, 240); doc.setLineWidth(0.5); doc.line(margin, y, pw - margin, y); y += 8; }
     });
 
     // ── Disclaimer ───────────────────────────────────────────────────────────
     y += 8;
-    section('Important Disclosures');
+    section(t('pdfDisclosures'));
     y += 4;
     doc.setFontSize(7.5); doc.setFont('helvetica', 'normal'); doc.setTextColor(100, 100, 100);
-    const disc = 'The guidance from the Investment Guidance Tool is provided for informational purposes only. It is not intended to provide personalized investment advice. The information presented by this tool is made available through Fiduciary Experts, the investment advisor for the ' + planName + ' 457 Deferred Compensation Plan. Its sole purpose is to assist you in determining your general attitudes towards investment risk. This questionnaire does not consider all factors necessary in making an investment decision (e.g., personal and financial information and investment objectives). In no way should this questionnaire be viewed as investment advice or as establishing any kind of advisory relationship with Fiduciary Experts. Fiduciary Experts does not endorse and/or recommend any specific financial product that may be used in conjunction with the fund options presented. Please consult your financial professional and obtain the financial product\'s prospectus (or its equivalent) and read it carefully prior to investing. Past performance does not guarantee future results. Fund data sourced from Yahoo Finance / Morningstar. Trailing returns as of 2/28/2026.';
+    const disc = t('modalDisclaimer');
     const discLines = doc.splitTextToSize(disc, cw);
     if (y + discLines.length * 7.5 * 1.4 > ph - 30) { doc.addPage(); y = margin; }
     doc.text(discLines, margin, y);
@@ -1950,51 +1942,60 @@ function sendResultsEmail() {
 
     const r = lastResults;
     const planName = clientConfig.planName || 'Retirement Plan';
-    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const today = new Date().toLocaleDateString(currentLang, { year: 'numeric', month: 'long', day: 'numeric' });
 
-    const subject = encodeURIComponent('Your Investment Guidance Results — ' + planName);
+    const subject = encodeURIComponent(t('pdfEmailSubject') + ' — ' + planName);
+
+    const etlabels = t('pdfTimeLabels');
+    const eTimeReason = r.yearsToRetire >= 25 ? etlabels[0] : r.yearsToRetire >= 20 ? etlabels[1] :
+        r.yearsToRetire >= 15 ? etlabels[2] : r.yearsToRetire >= 10 ? etlabels[3] :
+        r.yearsToRetire >= 5 ? etlabels[4] : etlabels[5];
+
+    const eQDefs = [
+        { key: 'q3', label: t('pdfQ3Label'), max: 5, hasDesc: true },
+        { key: 'q4', label: t('pdfQ4Label'), max: 4, hasDesc: true },
+        { key: 'q5', label: t('pdfQ5Label'), max: 4, hasDesc: true },
+        { key: 'q6', label: t('pdfQ6Label'), max: 4, hasDesc: true },
+        { key: 'q7', label: t('pdfQ7Label'), max: 4, hasDesc: false },
+    ];
+
+    const qScoreLines = eQDefs.map(({ key, label, max, hasDesc }) => {
+        const val = r[key] || 1;
+        const titleKey = hasDesc ? (key + '_' + val + 't') : (key + '_' + val);
+        return label + ': "' + t(titleKey) + '" (' + t('pdfScore') + ': ' + val + '/' + max + ')';
+    }).join('\n');
 
     const fundsText = r.recommendations.map((rec, i) => {
         const f = rec.fund;
         const hist = getHistoricalContext(f.stockBond);
         return (i + 1) + '. ' + f.name + '\n' +
-            '   Allocation: ' + f.stockBond + ' | Expense Ratio: ' + f.expenseRatio + '\n' +
-            (f.performance ? '   1-Year: ' + f.performance.yr1 + ' | 3-Year: ' + f.performance.yr3 + ' | Expected Return: ' + hist.avg + '\n' : '') +
+            '   ' + t('allocation') + ': ' + f.stockBond + ' | ' + t('expenseRatio') + ': ' + f.expenseRatio + '\n' +
+            (f.performance ? '   ' + t('yr1') + ': ' + f.performance.yr1 + ' | ' + t('yr3') + ': ' + f.performance.yr3 + ' | ' + t('expectedReturn') + ': ' + hist.avg + '\n' : '') +
             '   ' + getField(f, 'shortDesc');
     }).join('\n\n');
 
     const body = encodeURIComponent(
-        'INVESTMENT GUIDANCE TOOL — ' + planName + '\n' +
-        'Generated: ' + today + '\n\n' +
+        t('heroTitle').toUpperCase() + ' — ' + planName + '\n' +
+        t('pdfGenerated') + ': ' + today + '\n\n' +
         '════════════════════════════════\n' +
-        'YOUR RISK PROFILE: ' + r.riskProfile + '\n' +
-        'Age: ' + r.age + ' | Retiring at: ' + r.retireAge + ' | Years to Retirement: ' + r.yearsToRetire + '\n\n' +
+        t('pdfYourRiskProfile').toUpperCase() + ': ' + r.riskProfile + '\n' +
+        t('pdfAgeLabel') + ': ' + r.age + ' | ' + t('pdfRetiringAt') + ': ' + r.retireAge + ' | ' + r.yearsToRetire + ' ' + t('yearsToRetirement') + '\n\n' +
         '════════════════════════════════\n' +
-        'HOW YOUR PROFILE WAS CALCULATED\n' +
+        t('pdfHowCalculated').toUpperCase() + '\n' +
         '════════════════════════════════\n\n' +
-        'Time Horizon Score: ' + r.timeScore + '/5\n' +
-        'You have ' + r.yearsToRetire + ' years until retirement. ' +
-        (r.timeScore === 5 ? 'A 25+ year horizon earns the maximum time score, supporting a growth-oriented allocation.' :
-         r.timeScore === 4 ? 'A 20–24 year horizon earns a score of 4, supporting a moderately aggressive allocation.' :
-         r.timeScore === 3 ? 'A 15–19 year horizon earns a score of 3, supporting a moderate allocation.' :
-         r.timeScore === 2 ? 'A 10–14 year horizon earns a score of 2, supporting a moderately conservative allocation.' :
-         r.timeScore === 1 ? 'A 5–9 year horizon earns a score of 1, supporting a conservative allocation.' :
-         'Under 5 years earns a score of 0, indicating retirement is imminent and capital preservation is critical.') + '\n\n' +
-        'Risk Tolerance Score: ' + r.riskScore + '/20\n' +
-        'Q3 – Risk Comfort: Score ' + r.q3 + '/5\n' +
-        'Q4 – Market Reaction: Score ' + r.q4 + '/4\n' +
-        'Q5 – Investment Goal: Score ' + r.q5 + '/4\n' +
-        'Q6 – Experience: Score ' + r.q6 + '/4\n' +
-        'Q7 – Withdrawal Timeline: Score ' + r.q7 + '/4\n\n' +
-        'Combined Score: ' + r.totalScore + ' → ' + r.riskProfile + ' Profile\n\n' +
+        t('pdfTimeHorizonScore') + ': ' + r.timeScore + '/5\n' +
+        t('pdfTimeHorizonText', r.yearsToRetire, eTimeReason, r.timeScore) + '\n\n' +
+        t('pdfRiskToleranceScore') + ': ' + r.riskScore + '/20\n' +
+        qScoreLines + '\n\n' +
+        t('pdfCombinedScoreLabel') + ': ' + r.totalScore + ' → ' + r.riskProfile + ' (' + t('pdfTimeShort') + ' ' + r.timeScore + ' + ' + t('pdfRiskShort') + ' ' + r.riskScore + ')\n\n' +
         '════════════════════════════════\n' +
-        'POTENTIAL FUND OPTIONS TO CONSIDER\n' +
+        t('yourRecommendations').toUpperCase() + '\n' +
         '════════════════════════════════\n\n' +
         fundsText + '\n\n' +
         '════════════════════════════════\n' +
-        'DISCLAIMER\n' +
+        t('pdfEmailDisclaimer').toUpperCase() + '\n' +
         '════════════════════════════════\n' +
-        'The guidance from the Investment Guidance Tool is provided for informational purposes only. It is not intended to provide personalized investment advice. Its sole purpose is to assist you in determining your general attitudes towards investment risk. This questionnaire does not consider all factors necessary in making an investment decision (e.g., personal and financial information and investment objectives). In no way should this questionnaire be viewed as investment advice or as establishing any kind of advisory relationship with Fiduciary Experts. Please consult your financial professional and obtain the financial product\'s prospectus (or its equivalent) and read it carefully prior to investing. Past performance does not guarantee future results.'
+        t('modalDisclaimer')
     );
 
     window.open('mailto:' + encodeURIComponent(email) + '?subject=' + subject + '&body=' + body, '_self');
