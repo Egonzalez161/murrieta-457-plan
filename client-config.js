@@ -37,7 +37,7 @@ const clientConfig = {
     // Footer
     // ----------------------------------------------------------
     footerName:       'City of Murrieta 457 Deferred Compensation Plan',
-    footerDisclaimer: 'This tool is for educational purposes only and does not constitute investment advice.<br>Consult a financial advisor before making investment decisions. Past performance does not guarantee future results.<br>Fund performance data sourced from Yahoo Finance / Morningstar. Trailing returns as of 2/28/2026. Updated Q1 2026.',
+    footerDisclaimer: 'This tool is for educational purposes only and does not constitute investment advice.<br>Consult a financial advisor before making investment decisions. Past performance does not guarantee future results.<br>Fund performance data sourced from Yahoo Finance / Morningstar. Trailing returns as of 2/28/2026.',
 
     // ----------------------------------------------------------
     // Model Portfolios
