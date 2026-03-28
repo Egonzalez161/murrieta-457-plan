@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script src="client-config.js"></script>
+    <script src="translations.js"></script>
     <style>
         :root {
             --primary: #1a3a5c;
@@ -98,6 +99,19 @@
             opacity: 0.85;
             font-weight: 400;
         }
+
+        #lang-select {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.35);
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            outline: none;
+        }
+        #lang-select option { background: #1a3a5c; color: white; }
+        #lang-select:hover { background: rgba(255,255,255,0.25); }
 
         #header-login {
             background: var(--accent);
@@ -842,14 +856,25 @@
         </div>
         <div class="header-right">
             <img id="fe-logo" class="fe-logo" src="" alt="Fiduciary Experts" style="display:none;">
+            <select id="lang-select" onchange="setLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="zh">中文</option>
+                <option value="ja">日本語</option>
+                <option value="tl">Tagalog</option>
+                <option value="pt">Português</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="ru">Русский</option>
+            </select>
             <a id="header-login" href="#" target="_blank" rel="noopener"></a>
         </div>
     </div>
 </header>
 
 <section class="hero" id="hero-section">
-    <h2>How Should I Invest?</h2>
-    <p>Answer a few questions to discover investment options that align with your retirement goals and risk tolerance.</p>
+    <h2 data-i18n="heroTitle">How Should I Invest?</h2>
+    <p data-i18n="heroSubtitle">Answer a few questions to discover investment options that align with your retirement goals and risk tolerance.</p>
 </section>
 
 <div class="container">
@@ -866,232 +891,232 @@
 
     <!-- Question 1: Current Age -->
     <div class="question-card active" id="q1">
-        <div class="question-number">Question 1 of 7</div>
-        <h3>What is your current age?</h3>
+        <div class="question-number" data-i18n-q="1">Question 1 of 7</div>
+        <h3 data-i18n="q1">What is your current age?</h3>
         <div class="age-input-group">
             <input type="number" id="age-input" min="18" max="80" placeholder="e.g. 45">
-            <span>years old</span>
+            <span data-i18n="yearsOld">years old</span>
         </div>
         <div class="nav-buttons">
             <div></div>
-            <button class="btn btn-next" onclick="nextQuestion(1)">Continue</button>
+            <button class="btn btn-next" onclick="nextQuestion(1)" data-i18n="continue">Continue</button>
         </div>
     </div>
 
     <!-- Question 2: Retirement Age -->
     <div class="question-card" id="q2">
-        <div class="question-number">Question 2 of 7</div>
-        <h3>At what age do you plan to retire?</h3>
+        <div class="question-number" data-i18n-q="2">Question 2 of 7</div>
+        <h3 data-i18n="q2">At what age do you plan to retire?</h3>
         <div class="age-input-group">
             <input type="number" id="retire-input" min="50" max="80" placeholder="e.g. 65">
-            <span>years old</span>
+            <span data-i18n="yearsOld">years old</span>
         </div>
         <div class="nav-buttons">
-            <button class="btn btn-back" onclick="prevQuestion(2)">Back</button>
-            <button class="btn btn-next" onclick="nextQuestion(2)">Continue</button>
+            <button class="btn btn-back" onclick="prevQuestion(2)" data-i18n="back">Back</button>
+            <button class="btn btn-next" onclick="nextQuestion(2)" data-i18n="continue">Continue</button>
         </div>
     </div>
 
     <!-- Question 3: Risk Comfort -->
     <div class="question-card" id="q3">
-        <div class="question-number">Question 3 of 7</div>
-        <h3>How would you describe your comfort level with investment risk?</h3>
+        <div class="question-number" data-i18n-q="3">Question 3 of 7</div>
+        <h3 data-i18n="q3">How would you describe your comfort level with investment risk?</h3>
         <div class="options-list" id="q3-options">
             <label class="option-item" onclick="selectOption(3, 1)">
                 <input type="radio" name="q3" value="1">
                 <div class="option-label">
-                    <strong>Very Conservative</strong>
-                    <span>I prefer stability and am willing to accept lower returns to avoid losses.</span>
+                    <strong data-i18n="q3_1t">Very Conservative</strong>
+                    <span data-i18n="q3_1d">I prefer stability and am willing to accept lower returns to avoid losses.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(3, 2)">
                 <input type="radio" name="q3" value="2">
                 <div class="option-label">
-                    <strong>Somewhat Conservative</strong>
-                    <span>I want mostly stable investments with a small portion in growth.</span>
+                    <strong data-i18n="q3_2t">Somewhat Conservative</strong>
+                    <span data-i18n="q3_2d">I want mostly stable investments with a small portion in growth.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(3, 3)">
                 <input type="radio" name="q3" value="3">
                 <div class="option-label">
-                    <strong>Moderate</strong>
-                    <span>I want a balance between growth potential and stability.</span>
+                    <strong data-i18n="q3_3t">Moderate</strong>
+                    <span data-i18n="q3_3d">I want a balance between growth potential and stability.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(3, 4)">
                 <input type="radio" name="q3" value="4">
                 <div class="option-label">
-                    <strong>Somewhat Aggressive</strong>
-                    <span>I'm comfortable with fluctuations for higher long-term growth potential.</span>
+                    <strong data-i18n="q3_4t">Somewhat Aggressive</strong>
+                    <span data-i18n="q3_4d">I'm comfortable with fluctuations for higher long-term growth potential.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(3, 5)">
                 <input type="radio" name="q3" value="5">
                 <div class="option-label">
-                    <strong>Aggressive</strong>
-                    <span>I want maximum growth and can tolerate significant short-term losses.</span>
+                    <strong data-i18n="q3_5t">Aggressive</strong>
+                    <span data-i18n="q3_5d">I want maximum growth and can tolerate significant short-term losses.</span>
                 </div>
             </label>
         </div>
         <div class="nav-buttons">
-            <button class="btn btn-back" onclick="prevQuestion(3)">Back</button>
-            <button class="btn btn-next" onclick="nextQuestion(3)">Continue</button>
+            <button class="btn btn-back" onclick="prevQuestion(3)" data-i18n="back">Back</button>
+            <button class="btn btn-next" onclick="nextQuestion(3)" data-i18n="continue">Continue</button>
         </div>
     </div>
 
     <!-- Question 4: Reaction to decline -->
     <div class="question-card" id="q4">
-        <div class="question-number">Question 4 of 7</div>
-        <h3>If your account lost 20% of its value in a market downturn, what would you do?</h3>
+        <div class="question-number" data-i18n-q="4">Question 4 of 7</div>
+        <h3 data-i18n="q4">If your account lost 20% of its value in a market downturn, what would you do?</h3>
         <div class="options-list" id="q4-options">
             <label class="option-item" onclick="selectOption(4, 1)">
                 <input type="radio" name="q4" value="1">
                 <div class="option-label">
-                    <strong>Move everything to safer investments</strong>
-                    <span>I would immediately switch to more conservative options to prevent further losses.</span>
+                    <strong data-i18n="q4_1t">Move everything to safer investments</strong>
+                    <span data-i18n="q4_1d">I would immediately switch to more conservative options to prevent further losses.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(4, 2)">
                 <input type="radio" name="q4" value="2">
                 <div class="option-label">
-                    <strong>Move some to safer investments</strong>
-                    <span>I would shift a portion to conservative options to limit additional losses.</span>
+                    <strong data-i18n="q4_2t">Move some to safer investments</strong>
+                    <span data-i18n="q4_2d">I would shift a portion to conservative options to limit additional losses.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(4, 3)">
                 <input type="radio" name="q4" value="3">
                 <div class="option-label">
-                    <strong>Hold steady and wait for recovery</strong>
-                    <span>I would keep my current investments and wait for the market to rebound.</span>
+                    <strong data-i18n="q4_3t">Hold steady and wait for recovery</strong>
+                    <span data-i18n="q4_3d">I would keep my current investments and wait for the market to rebound.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(4, 4)">
                 <input type="radio" name="q4" value="4">
                 <div class="option-label">
-                    <strong>Invest more to take advantage of lower prices</strong>
-                    <span>I see downturns as buying opportunities and would increase my contributions.</span>
+                    <strong data-i18n="q4_4t">Invest more to take advantage of lower prices</strong>
+                    <span data-i18n="q4_4d">I see downturns as buying opportunities and would increase my contributions.</span>
                 </div>
             </label>
         </div>
         <div class="nav-buttons">
-            <button class="btn btn-back" onclick="prevQuestion(4)">Back</button>
-            <button class="btn btn-next" onclick="nextQuestion(4)">Continue</button>
+            <button class="btn btn-back" onclick="prevQuestion(4)" data-i18n="back">Back</button>
+            <button class="btn btn-next" onclick="nextQuestion(4)" data-i18n="continue">Continue</button>
         </div>
     </div>
 
     <!-- Question 5: Investment priority -->
     <div class="question-card" id="q5">
-        <div class="question-number">Question 5 of 7</div>
-        <h3>Which statement best describes your primary investment goal?</h3>
+        <div class="question-number" data-i18n-q="5">Question 5 of 7</div>
+        <h3 data-i18n="q5">Which statement best describes your primary investment goal?</h3>
         <div class="options-list" id="q5-options">
             <label class="option-item" onclick="selectOption(5, 1)">
                 <input type="radio" name="q5" value="1">
                 <div class="option-label">
-                    <strong>Preserve my savings</strong>
-                    <span>My top priority is protecting what I have, even if returns are minimal.</span>
+                    <strong data-i18n="q5_1t">Preserve my savings</strong>
+                    <span data-i18n="q5_1d">My top priority is protecting what I have, even if returns are minimal.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(5, 2)">
                 <input type="radio" name="q5" value="2">
                 <div class="option-label">
-                    <strong>Generate steady income</strong>
-                    <span>I want reliable, consistent returns with limited risk to my principal.</span>
+                    <strong data-i18n="q5_2t">Generate steady income</strong>
+                    <span data-i18n="q5_2d">I want reliable, consistent returns with limited risk to my principal.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(5, 3)">
                 <input type="radio" name="q5" value="3">
                 <div class="option-label">
-                    <strong>Balance growth and income</strong>
-                    <span>I want a mix of growth and income that moderates risk over time.</span>
+                    <strong data-i18n="q5_3t">Balance growth and income</strong>
+                    <span data-i18n="q5_3d">I want a mix of growth and income that moderates risk over time.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(5, 4)">
                 <input type="radio" name="q5" value="4">
                 <div class="option-label">
-                    <strong>Maximize long-term growth</strong>
-                    <span>I am focused on growing my savings as much as possible before retirement.</span>
+                    <strong data-i18n="q5_4t">Maximize long-term growth</strong>
+                    <span data-i18n="q5_4d">I am focused on growing my savings as much as possible before retirement.</span>
                 </div>
             </label>
         </div>
         <div class="nav-buttons">
-            <button class="btn btn-back" onclick="prevQuestion(5)">Back</button>
-            <button class="btn btn-next" onclick="nextQuestion(5)">Continue</button>
+            <button class="btn btn-back" onclick="prevQuestion(5)" data-i18n="back">Back</button>
+            <button class="btn btn-next" onclick="nextQuestion(5)" data-i18n="continue">Continue</button>
         </div>
     </div>
 
     <!-- Question 6: Experience -->
     <div class="question-card" id="q6">
-        <div class="question-number">Question 6 of 7</div>
-        <h3>How would you rate your experience with investing?</h3>
+        <div class="question-number" data-i18n-q="6">Question 6 of 7</div>
+        <h3 data-i18n="q6">How would you rate your experience with investing?</h3>
         <div class="options-list" id="q6-options">
             <label class="option-item" onclick="selectOption(6, 1)">
                 <input type="radio" name="q6" value="1">
                 <div class="option-label">
-                    <strong>Beginner</strong>
-                    <span>I have little to no experience and prefer a hands-off approach.</span>
+                    <strong data-i18n="q6_1t">Beginner</strong>
+                    <span data-i18n="q6_1d">I have little to no experience and prefer a hands-off approach.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(6, 2)">
                 <input type="radio" name="q6" value="2">
                 <div class="option-label">
-                    <strong>Some Experience</strong>
-                    <span>I understand basics like stocks and bonds but haven't actively managed investments.</span>
+                    <strong data-i18n="q6_2t">Some Experience</strong>
+                    <span data-i18n="q6_2d">I understand basics like stocks and bonds but haven't actively managed investments.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(6, 3)">
                 <input type="radio" name="q6" value="3">
                 <div class="option-label">
-                    <strong>Experienced</strong>
-                    <span>I have invested in multiple asset types and understand diversification and risk.</span>
+                    <strong data-i18n="q6_3t">Experienced</strong>
+                    <span data-i18n="q6_3d">I have invested in multiple asset types and understand diversification and risk.</span>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(6, 4)">
                 <input type="radio" name="q6" value="4">
                 <div class="option-label">
-                    <strong>Very Experienced</strong>
-                    <span>I actively manage investments and have a strong understanding of market dynamics.</span>
+                    <strong data-i18n="q6_4t">Very Experienced</strong>
+                    <span data-i18n="q6_4d">I actively manage investments and have a strong understanding of market dynamics.</span>
                 </div>
             </label>
         </div>
         <div class="nav-buttons">
-            <button class="btn btn-back" onclick="prevQuestion(6)">Back</button>
-            <button class="btn btn-next" onclick="nextQuestion(6)">Continue</button>
+            <button class="btn btn-back" onclick="prevQuestion(6)" data-i18n="back">Back</button>
+            <button class="btn btn-next" onclick="nextQuestion(6)" data-i18n="continue">Continue</button>
         </div>
     </div>
 
     <!-- Question 7: Withdrawal timeline -->
     <div class="question-card" id="q7">
-        <div class="question-number">Question 7 of 7</div>
-        <h3>When do you expect to begin withdrawing a significant portion of this investment?</h3>
+        <div class="question-number" data-i18n-q="7">Question 7 of 7</div>
+        <h3 data-i18n="q7">When do you expect to begin withdrawing a significant portion of this investment?</h3>
         <div class="options-list" id="q7-options">
             <label class="option-item" onclick="selectOption(7, 1)">
                 <input type="radio" name="q7" value="1">
                 <div class="option-label">
-                    <strong>Within 1–2 years</strong>
+                    <strong data-i18n="q7_1">Within 1–2 years</strong>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(7, 2)">
                 <input type="radio" name="q7" value="2">
                 <div class="option-label">
-                    <strong>In 3–5 years</strong>
+                    <strong data-i18n="q7_2">In 3–5 years</strong>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(7, 3)">
                 <input type="radio" name="q7" value="3">
                 <div class="option-label">
-                    <strong>In 6–10 years</strong>
+                    <strong data-i18n="q7_3">In 6–10 years</strong>
                 </div>
             </label>
             <label class="option-item" onclick="selectOption(7, 4)">
                 <input type="radio" name="q7" value="4">
                 <div class="option-label">
-                    <strong>In more than 10 years</strong>
+                    <strong data-i18n="q7_4">In more than 10 years</strong>
                 </div>
             </label>
         </div>
         <div class="nav-buttons">
-            <button class="btn btn-back" onclick="prevQuestion(7)">Back</button>
-            <button class="btn btn-results" onclick="showResults()">View My Recommendations</button>
+            <button class="btn btn-back" onclick="prevQuestion(7)" data-i18n="back">Back</button>
+            <button class="btn btn-results" onclick="showResults()" data-i18n="viewResults">View My Recommendations</button>
         </div>
     </div>
 
@@ -1099,7 +1124,7 @@
     <div id="results-section">
         <div class="results-header">
             <div class="risk-profile-badge" id="risk-badge">Moderate</div>
-            <h3 id="results-title">Your Personalized Recommendations</h3>
+            <h3 id="results-title" data-i18n="yourRecommendations">Your Personalized Recommendations</h3>
             <p id="results-description"></p>
         </div>
 
@@ -1107,13 +1132,13 @@
 
         <div class="compare-btn-container">
             <button class="btn btn-compare" id="compare-btn" onclick="compareSelected()" disabled>
-                Select 2 or more options above to compare
+                <span data-i18n="selectToCompare">Select 2 or more options above to compare</span>
             </button>
         </div>
 
         <div id="comparison-section">
             <div class="comparison-card">
-                <h3>Side-by-Side Comparison</h3>
+                <h3 data-i18n="sideBySide">Side-by-Side Comparison</h3>
                 <div id="comparison-table-container"></div>
             </div>
         </div>
@@ -1123,7 +1148,7 @@
             <p id="cta-body"></p>
             <a id="cta-btn" href="#" target="_blank" rel="noopener" class="btn-cta"></a>
             <br>
-            <span class="restart-link" onclick="restart()">Retake the questionnaire</span>
+            <span class="restart-link" onclick="restart()" data-i18n="retake">Retake the questionnaire</span>
         </div>
     </div>
 </div>
@@ -1188,6 +1213,35 @@ function initPage() {
 }
 
 document.addEventListener('DOMContentLoaded', initPage);
+
+// ── Language / i18n ───────────────────────────────────────────
+let currentLang = 'en';
+
+function t(key, ...args) {
+    const tr = translations[currentLang] || translations.en;
+    const val = (tr[key] !== undefined) ? tr[key] : (translations.en[key] || key);
+    return typeof val === 'function' ? val(...args) : val;
+}
+
+function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    applyTranslations();
+}
+
+function applyTranslations() {
+    // Static data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.getAttribute('data-i18n'));
+    });
+    // Progress "Question N of 7" labels
+    document.querySelectorAll('[data-i18n-q]').forEach(el => {
+        const n = el.getAttribute('data-i18n-q');
+        el.textContent = t('questionOf', n, totalQuestions);
+    });
+    // Progress header span
+    document.getElementById('progress-text').textContent = t('questionOf', currentQuestion, totalQuestions);
+}
 
 // State
 let currentQuestion = 1;
@@ -1476,7 +1530,7 @@ function updateProgress() {
     const pct = Math.round(((currentQuestion - 1) / totalQuestions) * 100);
     document.getElementById('progress-fill').style.width = pct + '%';
     document.getElementById('progress-pct').textContent = pct + '%';
-    document.getElementById('progress-text').textContent = `Question ${currentQuestion} of ${totalQuestions}`;
+    document.getElementById('progress-text').textContent = t('questionOf', currentQuestion, totalQuestions);
 }
 
 // Historical long-term return context by stock allocation %
@@ -1520,7 +1574,7 @@ function showResults() {
     const riskProfile    = profileMatch.profile;
     const modelFund      = clientConfig.hasModelPortfolios ? profileMatch.modelFund : null;
     const allocationFund = profileMatch.allocationFund;
-    const profileDesc    = `Based on your responses, you have a ${riskProfile.toLowerCase()} investment profile. With ${yearsToRetire} years until retirement, your recommendations reflect your goals and risk tolerance.`;
+    const profileDesc    = t('profileDesc', riskProfile, yearsToRetire);
 
     // Configure target date fund based on retirement year
     const retireYear = new Date().getFullYear() + yearsToRetire;
@@ -1583,29 +1637,29 @@ function showResults() {
                 </label>
                 <div class="rec-card-header">
                     <span class="rec-card-type">${fund.type}</span>
-                    ${rec.isBestMatch ? '<span class="rec-badge">Best Match</span>' : ''}
+                    ${rec.isBestMatch ? `<span class="rec-badge">${t('bestMatch')}</span>` : ''}
                 </div>
                 <h4>${fund.name}</h4>
                 <p>${fund.shortDesc}</p>
                 <div class="rec-card-stats">
                     <div class="stat">
-                        <span class="stat-label">Allocation</span>
+                        <span class="stat-label">${t('allocation')}</span>
                         <span class="stat-value">${fund.stockBond}</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-label">Expense Ratio</span>
+                        <span class="stat-label">${t('expenseRatio')}</span>
                         <span class="stat-value">${fund.expenseRatio}</span>
                     </div>
                     ${fund.performance ? `<div class="stat">
-                        <span class="stat-label">1-Yr Return</span>
+                        <span class="stat-label">${t('oneYrReturn')}</span>
                         <span class="stat-value">${fund.performance.yr1}</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-label">${fund.performance.yr10 !== 'N/A' ? '10-Yr Return' : 'Since Inception'}</span>
+                        <span class="stat-label">${fund.performance.yr10 !== 'N/A' ? t('tenYrReturn') : t('sinceInception')}</span>
                         <span class="stat-value">${fund.performance.yr10 !== 'N/A' ? fund.performance.yr10 : (fund.performance.sinceInception || 'N/A')}</span>
                     </div>` : ''}
                 </div>
-                ${(() => { const h = getHistoricalContext(fund.stockBond); return '<div class="hist-context"><strong>Expected Return Range: ' + h.avg + '</strong>' + h.note + '</div>'; })()}
+                ${(() => { const h = getHistoricalContext(fund.stockBond); return '<div class="hist-context"><strong>' + t('expectedReturn') + ': ' + h.avg + '</strong>' + h.note + '</div>'; })()}
                 ${rec.key === 'targetDateDynamic' ? '<p style="font-size:0.75rem;color:#999;margin-top:10px;line-height:1.4;"><em>This fund recommendation is based on the retirement age you selected. If your retirement plans change, a different target date fund may be more appropriate.</em></p>' : ''}
             </div>
         `;
@@ -1617,8 +1671,8 @@ function showResults() {
     document.getElementById('q' + currentQuestion).classList.remove('active');
     document.getElementById('progress-container').style.display = 'none';
     document.getElementById('results-section').classList.add('active');
-    document.getElementById('hero-section').querySelector('h2').textContent = 'Your Investment Recommendations';
-    document.getElementById('hero-section').querySelector('p').textContent = `Profile: ${riskProfile} | ${yearsToRetire} years to retirement`;
+    document.getElementById('hero-section').querySelector('h2').textContent = t('yourRecommendations');
+    document.getElementById('hero-section').querySelector('p').textContent = `${t('profileLabel')}: ${riskProfile} | ${yearsToRetire} ${t('yearsToRetirement')}`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     selectedCompare.clear();
@@ -1632,49 +1686,49 @@ function openFundDetail(key) {
 
     const perfHtml = fund.performance ? `
         <div class="modal-section">
-            <h4>Performance (as of 2/28/2026, net of 12 bps admin fee)</h4>
+            <h4>${t('performanceLabel')}</h4>
             <div class="modal-stats-grid">
-                <div class="modal-stat"><span class="stat-label">1-Year</span><span class="stat-value">${fund.performance.yr1}</span></div>
-                <div class="modal-stat"><span class="stat-label">3-Year Ann.</span><span class="stat-value">${fund.performance.yr3}</span></div>
-                <div class="modal-stat"><span class="stat-label">5-Year Ann.</span><span class="stat-value">${fund.performance.yr5}</span></div>
-                <div class="modal-stat"><span class="stat-label">10-Year Ann.</span><span class="stat-value">${fund.performance.yr10}</span></div>
+                <div class="modal-stat"><span class="stat-label">${t('yr1')}</span><span class="stat-value">${fund.performance.yr1}</span></div>
+                <div class="modal-stat"><span class="stat-label">${t('yr3')}</span><span class="stat-value">${fund.performance.yr3}</span></div>
+                <div class="modal-stat"><span class="stat-label">${t('yr5')}</span><span class="stat-value">${fund.performance.yr5}</span></div>
+                <div class="modal-stat"><span class="stat-label">${t('yr10')}</span><span class="stat-value">${fund.performance.yr10}</span></div>
             </div>
             ${fund.stats ? `<div class="modal-stats-grid" style="margin-top:8px">
-                <div class="modal-stat"><span class="stat-label">Sharpe Ratio (3yr)</span><span class="stat-value">${fund.stats.sharpe3yr}</span></div>
-                <div class="modal-stat"><span class="stat-label">Std Deviation (3yr)</span><span class="stat-value">${fund.stats.stdDev3yr}</span></div>
-                <div class="modal-stat"><span class="stat-label">Inception</span><span class="stat-value">${fund.stats.inception}</span></div>
-                <div class="modal-stat"><span class="stat-label">Rebalancing</span><span class="stat-value">${fund.stats.rebalance}</span></div>
+                <div class="modal-stat"><span class="stat-label">${t('sharpe')}</span><span class="stat-value">${fund.stats.sharpe3yr}</span></div>
+                <div class="modal-stat"><span class="stat-label">${t('stdDev')}</span><span class="stat-value">${fund.stats.stdDev3yr}</span></div>
+                <div class="modal-stat"><span class="stat-label">${t('inceptionDate')}</span><span class="stat-value">${fund.stats.inception}</span></div>
+                <div class="modal-stat"><span class="stat-label">${t('rebalance')}</span><span class="stat-value">${fund.stats.rebalance}</span></div>
             </div>` : ''}
-            <p style="font-size:0.78rem;color:#999;margin-top:8px;">Trailing returns as of 2/28/2026, net of 12 bps annual administrative fee. Source: Yahoo Finance / Morningstar. Past performance is not a guarantee of future results. Returns greater than one year are annualized.</p>
+            <p style="font-size:0.78rem;color:#999;margin-top:8px;">${t('perfDisclaimer')}</p>
         </div>` : '';
 
     const html = `
         <span class="modal-type">${fund.type}</span>
         <h3>${fund.name}</h3>
         <div class="modal-stats-grid">
-            <div class="modal-stat"><span class="stat-label">Risk Level</span><span class="stat-value">${fund.riskLevel}</span></div>
-            <div class="modal-stat"><span class="stat-label">Allocation</span><span class="stat-value">${fund.stockBond}</span></div>
-            <div class="modal-stat"><span class="stat-label">Expense Ratio</span><span class="stat-value">${fund.expenseRatio}</span></div>
-            <div class="modal-stat"><span class="stat-label">Best For</span><span class="stat-value" style="font-size:0.8rem">${fund.bestFor}</span></div>
+            <div class="modal-stat"><span class="stat-label">${t('riskLevel')}</span><span class="stat-value">${fund.riskLevel}</span></div>
+            <div class="modal-stat"><span class="stat-label">${t('allocation')}</span><span class="stat-value">${fund.stockBond}</span></div>
+            <div class="modal-stat"><span class="stat-label">${t('expenseRatio')}</span><span class="stat-value">${fund.expenseRatio}</span></div>
+            <div class="modal-stat"><span class="stat-label">${t('bestFor')}</span><span class="stat-value" style="font-size:0.8rem">${fund.bestFor}</span></div>
         </div>
         <div class="modal-section">
-            <h4>Overview</h4>
+            <h4>${t('overview')}</h4>
             <p>${fund.description}</p>
         </div>
         ${perfHtml}
         <div class="modal-section">
-            <h4>Allocation Breakdown</h4>
+            <h4>${t('holdings')}</h4>
             <ul>${fund.allocation.map(a => `<li>${a}</li>`).join('')}</ul>
         </div>
         <div class="modal-section">
-            <h4>Advantages</h4>
+            <h4>${t('pros')}</h4>
             <ul>${fund.pros.map(p => `<li>${p}</li>`).join('')}</ul>
         </div>
         <div class="modal-section">
-            <h4>Considerations</h4>
+            <h4>${t('cons')}</h4>
             <ul>${fund.cons.map(c => `<li>${c}</li>`).join('')}</ul>
         </div>
-        <p style="font-size:0.78rem;color:#999;margin-top:12px;">Trailing returns as of 2/28/2026. Non-model portfolio returns shown net of 12 bps annual administrative fee. Source: Yahoo Finance / Morningstar. Model portfolio data from City of Murrieta Q4 2025 Monitoring Report. Past performance is not a guarantee of future results. This tool is for educational purposes only and does not constitute investment advice.</p>
+        <p style="font-size:0.78rem;color:#999;margin-top:12px;">${t('modalDisclaimer')}</p>
     `;
 
     document.getElementById('modal-body').innerHTML = html;
@@ -1704,10 +1758,10 @@ function toggleCompare(key, checked) {
     const btn = document.getElementById('compare-btn');
     if (selectedCompare.size >= 2) {
         btn.disabled = false;
-        btn.textContent = `Compare ${selectedCompare.size} Selected Options`;
+        btn.textContent = t('compareSelected', selectedCompare.size);
     } else {
         btn.disabled = true;
-        btn.textContent = 'Select 2 or more options above to compare';
+        btn.textContent = t('selectToCompare');
     }
 
     // Hide comparison if selections changed
@@ -1722,21 +1776,21 @@ function compareSelected() {
     );
 
     const rows = [
-        { label: 'Type', get: f => f.type },
-        { label: 'Risk Level', get: f => f.riskLevel },
-        { label: 'Stock/Bond Split', get: f => f.stockBond },
-        { label: 'Expense Ratio', get: f => f.expenseRatio },
-        { label: '1-Year Return', get: f => f.performance ? f.performance.yr1 : 'N/A' },
-        { label: '5-Year Return', get: f => f.performance ? f.performance.yr5 : 'N/A' },
-        { label: '10-Year Return', get: f => f.performance ? (f.performance.yr10 !== 'N/A' ? f.performance.yr10 : (f.performance.sinceInception ? f.performance.sinceInception + '*' : 'N/A')) : 'N/A' },
-        { label: 'Best For', get: f => f.bestFor },
-        { label: 'Management Style', get: f => f.type === 'Model Portfolio' ? 'Plan-managed model (quarterly rebalancing)' : f.id === 'puritan' ? 'Active management (Fidelity)' : f.id === 'wellesley' ? 'Active management (Wellington)' : 'Index-based / Passive' },
-        { label: 'Rebalancing', get: f => f.type === 'Model Portfolio' ? 'Quarterly (automatic within the model)' : 'Automatic' },
-        { label: 'Advantages', get: f => f.pros.slice(0, 2).join('; ') },
-        { label: 'Considerations', get: f => f.cons.slice(0, 2).join('; ') }
+        { label: t('compareType'), get: f => f.type },
+        { label: t('riskLevel'), get: f => f.riskLevel },
+        { label: t('allocation'), get: f => f.stockBond },
+        { label: t('expenseRatio'), get: f => f.expenseRatio },
+        { label: t('yr1'), get: f => f.performance ? f.performance.yr1 : 'N/A' },
+        { label: t('yr5'), get: f => f.performance ? f.performance.yr5 : 'N/A' },
+        { label: t('yr10'), get: f => f.performance ? (f.performance.yr10 !== 'N/A' ? f.performance.yr10 : (f.performance.sinceInception ? f.performance.sinceInception + '*' : 'N/A')) : 'N/A' },
+        { label: t('bestFor'), get: f => f.bestFor },
+        { label: t('managementStyle'), get: f => f.type === 'Model Portfolio' ? t('mgmtModel') : f.id === 'puritan' ? t('mgmtActiveFidelity') : f.id === 'wellesley' ? t('mgmtActiveWellington') : t('mgmtIndex') },
+        { label: t('rebalance'), get: f => f.type === 'Model Portfolio' ? t('rebalanceModel') : t('rebalanceAuto') },
+        { label: t('pros'), get: f => f.pros.slice(0, 2).join('; ') },
+        { label: t('cons'), get: f => f.cons.slice(0, 2).join('; ') }
     ];
 
-    let tableHtml = '<table class="comparison-table"><thead><tr><th>Feature</th>';
+    let tableHtml = `<table class="comparison-table"><thead><tr><th>${t('feature')}</th>`;
     funds.forEach(f => { tableHtml += `<th>${f.name}</th>`; });
     tableHtml += '</tr></thead><tbody>';
 
@@ -1763,8 +1817,8 @@ function restart() {
     document.getElementById('results-section').classList.remove('active');
     document.getElementById('comparison-section').classList.remove('active');
     document.getElementById('progress-container').style.display = 'block';
-    document.getElementById('hero-section').querySelector('h2').textContent = 'How Should I Invest?';
-    document.getElementById('hero-section').querySelector('p').textContent = 'Answer a few questions to discover investment options that align with your retirement goals and risk tolerance.';
+    document.getElementById('hero-section').querySelector('h2').textContent = t('heroTitle');
+    document.getElementById('hero-section').querySelector('p').textContent = t('heroSubtitle');
 
     document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
     document.getElementById('q1').classList.add('active');
