@@ -6,6 +6,7 @@
     <title></title>
     <script src="client-config.js"></script>
     <script src="translations.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary: #1a3a5c;
@@ -839,6 +840,69 @@
                 gap: 12px;
             }
         }
+
+        /* PDF / Email Section */
+        #pdf-email-section {
+            background: #fff;
+            border: 1px solid #e0e6ef;
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin: 28px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        #pdf-email-section h3 {
+            color: var(--primary);
+            font-size: 1.15rem;
+            margin-bottom: 6px;
+        }
+        #pdf-email-section p.subtitle {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 22px;
+        }
+        .pdf-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+        .pdf-actions .btn-pdf {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 11px 24px;
+            border-radius: 7px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .pdf-actions .btn-pdf:hover { background: var(--primary-light); }
+        .pdf-email-input-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #pdf-email-input {
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 0.9rem;
+            min-width: 220px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        #pdf-email-input:focus { border-color: var(--primary); }
+        #pdf-email-status {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            min-height: 20px;
+        }
     </style>
 </head>
 <body>
@@ -1143,6 +1207,20 @@
             </div>
         </div>
 
+        <!-- PDF / Email Section -->
+        <div id="pdf-email-section">
+            <h3 data-i18n="pdfSectionTitle">Save or Share Your Results</h3>
+            <p class="subtitle" data-i18n="pdfSectionSubtitle">Download a personalized PDF explaining your risk profile and recommendations, or send a summary to your email.</p>
+            <div class="pdf-actions">
+                <button class="btn-pdf" onclick="generatePDF()" data-i18n="pdfDownload">⬇ Download PDF Report</button>
+                <div class="pdf-email-input-group">
+                    <input type="email" id="pdf-email-input" data-i18n-placeholder="pdfEmailPlaceholder" placeholder="your@email.com">
+                    <button class="btn-pdf" onclick="sendResultsEmail()" data-i18n="pdfSendEmail">✉ Send to My Email</button>
+                </div>
+            </div>
+            <p id="pdf-email-status"></p>
+        </div>
+
         <div class="cta-section">
             <h3 id="cta-title"></h3>
             <p id="cta-body"></p>
@@ -1248,6 +1326,10 @@ function applyTranslations() {
     });
     // Progress header span
     document.getElementById('progress-text').textContent = t('questionOf', currentQuestion, totalQuestions);
+    // Placeholder attributes
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+    });
 }
 
 // State
@@ -1255,6 +1337,7 @@ let currentQuestion = 1;
 const totalQuestions = 7;
 const answers = {};
 let selectedCompare = new Set();
+let lastResults = null; // Populated by showResults() for PDF/email use
 
 // Fund data loaded from client-config.js
 const fundData = clientConfig.fundData;
@@ -1674,6 +1757,22 @@ function showResults() {
 
     document.getElementById('rec-cards').innerHTML = cardsHtml;
 
+    // Store results for PDF/email generation
+    lastResults = {
+        age: answers.age,
+        retireAge: answers.retireAge,
+        yearsToRetire,
+        timeScore,
+        riskScore,
+        totalScore,
+        riskProfile,
+        q3: answers.q3, q4: answers.q4, q5: answers.q5, q6: answers.q6, q7: answers.q7,
+        recommendations: recommendations.map(rec => {
+            const f = rec.key === 'targetDateDynamic' ? fundData.targetDateDynamic : fundData[rec.key];
+            return { key: rec.key, isBestMatch: rec.isBestMatch, fund: f };
+        })
+    };
+
     // Show results, hide questionnaire
     document.getElementById('q' + currentQuestion).classList.remove('active');
     document.getElementById('progress-container').style.display = 'none';
@@ -1684,6 +1783,215 @@ function showResults() {
 
     selectedCompare.clear();
     document.getElementById('comparison-section').classList.remove('active');
+}
+
+// ── PDF Generation ────────────────────────────────────────────────────────────
+function generatePDF() {
+    if (!lastResults || !window.jspdf) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+    const margin = 50;
+    const pw = doc.internal.pageSize.getWidth();
+    const ph = doc.internal.pageSize.getHeight();
+    const cw = pw - margin * 2;
+    let y = margin;
+
+    function addText(text, opts = {}) {
+        const sz = opts.size || 10;
+        doc.setFontSize(sz);
+        doc.setFont('helvetica', opts.style || 'normal');
+        doc.setTextColor(...(opts.color || [40, 40, 40]));
+        const lines = doc.splitTextToSize(String(text), opts.maxWidth || cw);
+        if (y + lines.length * sz * 1.45 > ph - margin) { doc.addPage(); y = margin; }
+        doc.text(lines, opts.x !== undefined ? opts.x : margin, y);
+        y += lines.length * sz * 1.45 + (opts.after || 0);
+    }
+
+    function rule(color = [200, 210, 225]) {
+        if (y + 12 > ph - margin) { doc.addPage(); y = margin; }
+        doc.setDrawColor(...color);
+        doc.setLineWidth(0.75);
+        doc.line(margin, y, pw - margin, y);
+        y += 10;
+    }
+
+    function section(title) {
+        if (y + 30 > ph - margin) { doc.addPage(); y = margin; }
+        y += 6;
+        doc.setFillColor(26, 58, 92);
+        doc.roundedRect(margin, y - 12, cw, 22, 3, 3, 'F');
+        doc.setFontSize(10); doc.setFont('helvetica', 'bold');
+        doc.setTextColor(255, 255, 255);
+        doc.text(title.toUpperCase(), margin + 10, y + 4);
+        y += 20;
+        doc.setTextColor(40, 40, 40);
+    }
+
+    const r = lastResults;
+    const planName = clientConfig.planName || 'Retirement Plan';
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    // ── Header ────────────────────────────────────────────────────────────────
+    doc.setFillColor(26, 58, 92);
+    doc.rect(0, 0, pw, 70, 'F');
+    doc.setFontSize(18); doc.setFont('helvetica', 'bold');
+    doc.setTextColor(255, 255, 255);
+    doc.text('Investment Guidance Tool', margin, 32);
+    doc.setFontSize(10); doc.setFont('helvetica', 'normal');
+    doc.text(planName + ' · Generated ' + today, margin, 50);
+    y = 90;
+
+    // ── Risk Profile Banner ───────────────────────────────────────────────────
+    doc.setFillColor(200, 169, 81);
+    doc.roundedRect(margin, y, cw, 40, 4, 4, 'F');
+    doc.setFontSize(13); doc.setFont('helvetica', 'bold');
+    doc.setTextColor(26, 58, 92);
+    doc.text('Your Risk Profile: ' + r.riskProfile, pw / 2, y + 15, { align: 'center' });
+    doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+    doc.text('Age ' + r.age + '  ·  Retiring at ' + r.retireAge + '  ·  ' + r.yearsToRetire + ' years to retirement', pw / 2, y + 29, { align: 'center' });
+    y += 52;
+
+    // ── How Your Profile Was Calculated ──────────────────────────────────────
+    section('How Your Profile Was Calculated');
+    y += 4;
+
+    // Time horizon
+    const timeLabels = [
+        '25+ years → maximum time score',
+        '20–24 years → score of 4',
+        '15–19 years → score of 3',
+        '10–14 years → score of 2',
+        '5–9 years → score of 1',
+        'Under 5 years → score of 0'
+    ];
+    const timeReason = r.yearsToRetire >= 25 ? timeLabels[0] : r.yearsToRetire >= 20 ? timeLabels[1] :
+        r.yearsToRetire >= 15 ? timeLabels[2] : r.yearsToRetire >= 10 ? timeLabels[3] :
+        r.yearsToRetire >= 5 ? timeLabels[4] : timeLabels[5];
+
+    addText('TIME HORIZON SCORE: ' + r.timeScore + ' / 5', { size: 10, style: 'bold', after: 2 });
+    addText('With ' + r.yearsToRetire + ' years until retirement (' + timeReason + '), your time horizon score is ' + r.timeScore + '. A longer runway allows more time to recover from market downturns, which supports a higher allocation to growth assets.', { size: 9.5, after: 10 });
+
+    // Q3–Q7 answers
+    const qLabels = {
+        q3: { q: 'Risk Comfort (Q3)', max: 5, labels: [, 'Very Conservative', 'Somewhat Conservative', 'Moderate', 'Somewhat Aggressive', 'Aggressive'], impact: [, 'indicates a strong preference for stability over growth', 'indicates preference for mostly stable investments', 'indicates a balanced approach to risk and growth', 'indicates comfort with volatility for higher returns', 'indicates a strong preference for maximum growth'] },
+        q4: { q: 'Market Reaction (Q4)', max: 4, labels: [, 'Move everything to safer investments', 'Move some to safer investments', 'Hold steady and wait for recovery', 'Invest more at lower prices'], impact: [, 'suggests a very low risk tolerance — you prioritize protecting your account', 'suggests a cautious approach to market declines', 'suggests emotional resilience and a long-term mindset', 'suggests a high risk tolerance and opportunistic mindset'] },
+        q5: { q: 'Investment Goal (Q5)', max: 4, labels: [, 'Preserve my savings', 'Generate steady income', 'Balance growth and income', 'Maximize long-term growth'], impact: [, 'prioritizing capital preservation above all else', 'prioritizing reliable income with limited risk', 'seeking a balanced approach to growth and stability', 'prioritizing long-term wealth accumulation'] },
+        q6: { q: 'Investment Experience (Q6)', max: 4, labels: [, 'Beginner', 'Some Experience', 'Experienced', 'Very Experienced'], impact: [, 'suggesting a hands-off approach may suit you best', 'suggesting familiarity with basic investment concepts', 'suggesting comfort managing across multiple asset types', 'suggesting strong familiarity with market dynamics'] },
+        q7: { q: 'Withdrawal Timeline (Q7)', max: 4, labels: [, 'Within 1–2 years', 'In 3–5 years', 'In 6–10 years', 'In more than 10 years'], impact: [, 'indicating an immediate need for liquidity — very conservative positioning is appropriate', 'indicating a near-term need — capital preservation is a priority', 'indicating a medium-term horizon — moderate positioning is appropriate', 'indicating a long-term horizon — growth-oriented positioning is appropriate'] }
+    };
+
+    addText('RISK TOLERANCE SCORE: ' + r.riskScore + ' / 20', { size: 10, style: 'bold', after: 4 });
+
+    ['q3','q4','q5','q6','q7'].forEach(qk => {
+        const info = qLabels[qk];
+        const val = r[qk] || 1;
+        const label = info.labels[val];
+        const impact = info.impact[val];
+        if (y + 36 > ph - margin) { doc.addPage(); y = margin; }
+        addText(info.q + ':  "' + label + '"  (Score: ' + val + '/' + info.max + ')', { size: 9.5, style: 'bold', after: 2 });
+        addText('This response ' + impact + '.', { size: 9, color: [80, 80, 80], after: 8 });
+    });
+
+    rule();
+    addText('COMBINED SCORE: ' + r.totalScore + '  →  Profile: ' + r.riskProfile + '  (Time ' + r.timeScore + ' + Risk ' + r.riskScore + ')', { size: 10, style: 'bold', after: 6 });
+    addText('Your total score of ' + r.totalScore + ' was compared against the plan\'s scoring thresholds to arrive at the ' + r.riskProfile + ' profile. This reflects both how long you have until retirement and how you responded to the five risk questions.', { size: 9.5, after: 12 });
+
+    // ── Recommended Funds ────────────────────────────────────────────────────
+    section('Your Recommended Funds');
+    y += 4;
+
+    r.recommendations.forEach((rec, i) => {
+        const f = rec.fund;
+        const hist = getHistoricalContext(f.stockBond);
+        if (y + 80 > ph - margin) { doc.addPage(); y = margin; }
+        const tag = rec.isBestMatch ? ' ★ Best Match' : '';
+        addText((i + 1) + '.  ' + f.name + tag, { size: 10.5, style: 'bold', color: rec.isBestMatch ? [26, 58, 92] : [40, 40, 40], after: 3 });
+        addText(f.type + '  ·  ' + f.stockBond + '  ·  Expense Ratio: ' + f.expenseRatio, { size: 9, color: [100, 100, 100], after: 3 });
+        if (f.performance) addText('1-Year: ' + f.performance.yr1 + '  ·  3-Year: ' + f.performance.yr3 + '  ·  5-Year: ' + f.performance.yr5 + '  ·  Expected Return Range: ' + hist.avg, { size: 9, color: [100, 100, 100], after: 3 });
+        addText(getField(f, 'shortDesc'), { size: 9.5, after: 10 });
+        if (i < r.recommendations.length - 1) { doc.setDrawColor(220, 228, 240); doc.setLineWidth(0.5); doc.line(margin, y, pw - margin, y); y += 8; }
+    });
+
+    // ── Disclaimer ───────────────────────────────────────────────────────────
+    y += 8;
+    section('Important Disclosures');
+    y += 4;
+    doc.setFontSize(7.5); doc.setFont('helvetica', 'normal'); doc.setTextColor(100, 100, 100);
+    const disc = 'The Investment Guidance Tool is provided for informational and educational purposes only. Results are generated solely based on the limited responses provided and do not account for your complete financial situation. This tool does not constitute investment advice, a solicitation, or an offer to provide investment advisory services, and does not create an advisor-client relationship with Fiduciary Experts or ' + planName + '. Recommendations should not be relied upon as the sole basis for any investment decision. Fiduciary Experts serves as the investment advisor for this plan. Please consult a qualified financial professional before making any investment decisions. Past performance does not guarantee future results. Fund data sourced from Yahoo Finance / Morningstar. Trailing returns as of 2/28/2026.';
+    const discLines = doc.splitTextToSize(disc, cw);
+    if (y + discLines.length * 7.5 * 1.4 > ph - 30) { doc.addPage(); y = margin; }
+    doc.text(discLines, margin, y);
+
+    doc.save('Investment-Guidance-' + planName.replace(/\s+/g, '-') + '-' + today.replace(/,?\s+/g, '-') + '.pdf');
+}
+
+// ── Email Results ──────────────────────────────────────────────────────────────
+function sendResultsEmail() {
+    const emailInput = document.getElementById('pdf-email-input');
+    const status = document.getElementById('pdf-email-status');
+    const email = emailInput.value.trim();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        status.textContent = t('pdfEmailInvalid');
+        status.style.color = '#c0392b';
+        return;
+    }
+    if (!lastResults) return;
+
+    const r = lastResults;
+    const planName = clientConfig.planName || 'Retirement Plan';
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    const subject = encodeURIComponent('Your Investment Guidance Results — ' + planName);
+
+    const fundsText = r.recommendations.map((rec, i) => {
+        const f = rec.fund;
+        const hist = getHistoricalContext(f.stockBond);
+        return (i + 1) + '. ' + f.name + (rec.isBestMatch ? ' ★ Best Match' : '') + '\n' +
+            '   Allocation: ' + f.stockBond + ' | Expense Ratio: ' + f.expenseRatio + '\n' +
+            (f.performance ? '   1-Year: ' + f.performance.yr1 + ' | 3-Year: ' + f.performance.yr3 + ' | Expected Return: ' + hist.avg + '\n' : '') +
+            '   ' + getField(f, 'shortDesc');
+    }).join('\n\n');
+
+    const body = encodeURIComponent(
+        'INVESTMENT GUIDANCE TOOL — ' + planName + '\n' +
+        'Generated: ' + today + '\n\n' +
+        '════════════════════════════════\n' +
+        'YOUR RISK PROFILE: ' + r.riskProfile + '\n' +
+        'Age: ' + r.age + ' | Retiring at: ' + r.retireAge + ' | Years to Retirement: ' + r.yearsToRetire + '\n\n' +
+        '════════════════════════════════\n' +
+        'HOW YOUR PROFILE WAS CALCULATED\n' +
+        '════════════════════════════════\n\n' +
+        'Time Horizon Score: ' + r.timeScore + '/5\n' +
+        'You have ' + r.yearsToRetire + ' years until retirement. ' +
+        (r.timeScore === 5 ? 'A 25+ year horizon earns the maximum time score, supporting a growth-oriented allocation.' :
+         r.timeScore === 4 ? 'A 20–24 year horizon earns a score of 4, supporting a moderately aggressive allocation.' :
+         r.timeScore === 3 ? 'A 15–19 year horizon earns a score of 3, supporting a moderate allocation.' :
+         r.timeScore === 2 ? 'A 10–14 year horizon earns a score of 2, supporting a moderately conservative allocation.' :
+         r.timeScore === 1 ? 'A 5–9 year horizon earns a score of 1, supporting a conservative allocation.' :
+         'Under 5 years earns a score of 0, indicating retirement is imminent and capital preservation is critical.') + '\n\n' +
+        'Risk Tolerance Score: ' + r.riskScore + '/20\n' +
+        'Q3 – Risk Comfort: Score ' + r.q3 + '/5\n' +
+        'Q4 – Market Reaction: Score ' + r.q4 + '/4\n' +
+        'Q5 – Investment Goal: Score ' + r.q5 + '/4\n' +
+        'Q6 – Experience: Score ' + r.q6 + '/4\n' +
+        'Q7 – Withdrawal Timeline: Score ' + r.q7 + '/4\n\n' +
+        'Combined Score: ' + r.totalScore + ' → ' + r.riskProfile + ' Profile\n\n' +
+        '════════════════════════════════\n' +
+        'YOUR RECOMMENDED FUNDS\n' +
+        '════════════════════════════════\n\n' +
+        fundsText + '\n\n' +
+        '════════════════════════════════\n' +
+        'DISCLAIMER\n' +
+        '════════════════════════════════\n' +
+        'This tool provides general guidance only and does not constitute investment advice. Results are based on limited questionnaire responses and do not reflect your full financial situation. Consult a qualified financial professional before making investment decisions. Past performance does not guarantee future results.'
+    );
+
+    window.open('mailto:' + encodeURIComponent(email) + '?subject=' + subject + '&body=' + body, '_self');
+
+    status.textContent = t('pdfEmailSent');
+    status.style.color = '#2a7a4a';
+    emailInput.value = '';
 }
 
 // Fund detail modal
